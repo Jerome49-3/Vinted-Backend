@@ -24,7 +24,7 @@ router.post('/offer/publish', isAuthenticated, fileUpload(), async (req, res) =>
     const picture = req.files;
     console.log('picture:', picture);
     const dataPicture = await cloudinary.uploader.upload(
-      convertToBase64(req.files.files)
+      convertToBase64(req.files.image)
     );
     console.log('dataPicture:', dataPicture);
     // console.log(dataPicture);
