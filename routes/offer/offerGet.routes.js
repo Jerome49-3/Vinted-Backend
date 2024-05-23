@@ -1,9 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const Offer = require('../models/Offer')
+const Offer = require('../../models/Offer')
 
-router.get('/offers', async (req, res) => {
+router.get('/offer', async (req, res) => {
   console.log('je suis sur la route /offers')
   const getOffer = await Offer.find();
   return res.status(200).json({ getOffer, message: "getofferok" })
@@ -15,7 +15,7 @@ router.get('/offers', async (req, res) => {
   // } = req.query
 })
 
-router.get('/offers/:id', async (req, res) => {
+router.get('/offer/:id', async (req, res) => {
   console.log('je suis sur la route /offers/:id')
   const offerId = req.params.id;
   const offerIdIsValid = mongoose.isValidObjectId(offerId);

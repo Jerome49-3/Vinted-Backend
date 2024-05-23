@@ -1,10 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const Offer = require('../models/Offer.js')
-const isAuthenticated = require('../middleware/isAuthenticated');
+const Offer = require('../../models/Offer.js')
+const isAuthenticated = require('../../middleware/isAuthenticated.js');
 const fileUpload = require('express-fileupload');
-const convertToBase64 = require('../utils/convertToBase64.js');
+const convertToBase64 = require('../../utils/convertToBase64.js');
 const cloudinary = require("cloudinary").v2;
 
 router.post('/offer/publish', isAuthenticated, fileUpload(), async (req, res) => {
@@ -55,7 +55,6 @@ router.post('/offer/publish', isAuthenticated, fileUpload(), async (req, res) =>
     console.log(error.status);
     return res.status(500).json({ message: error.message })
   }
-
 })
 
 module.exports = router;
