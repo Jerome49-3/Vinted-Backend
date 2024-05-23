@@ -4,16 +4,12 @@ const router = express.Router();
 const Offer = require('../models/Offer.js')
 const isAuthenticated = require('../middleware/isAuthenticated');
 const fileUpload = require('express-fileupload');
-const convertToBase64 = require('../utils/convertToBase64.js')
+const convertToBase64 = require('../lib/convertToBase64.js');
+const cloudinary = require("cloudinary").v2;
 
-router.use(isAuthenticated);
-
-
-router.post('/offer/publish', fileUpload(), async (req, res) => {
+router.post('/offer/publish', isAuthenticated, fileUpload(), async (req, res) => {
   // console.log('req.body:', req.body)
   try {
-    console.log(req.body);
-    console.log(req.files);
     const {
       title,
       description,
@@ -22,10 +18,16 @@ router.post('/offer/publish', fileUpload(), async (req, res) => {
       city,
       brand,
       size,
-      color,
-      picture
+      color
     } = req.body;
-
+    // console.log(req.body);
+    // const picture = req.files;
+    // console.log('picture', req.body);
+    const dataPicture = await cloudinary.uploader.upload(
+      convertToBase64(req.files.pictures)
+    );
+    console.log('dataPicture:', dataPicture);
+    // console.log(dataPicture);
     if (req.body !== undefined) {
       // console.log('req.user.id:', req.user.id, 'req.user.account.username', req.user.account.username)
       const newOffer = new Offer({
@@ -40,7 +42,7 @@ router.post('/offer/publish', fileUpload(), async (req, res) => {
           { EMPLACEMENT: city }
         ],
         owner: req.user,
-        product_image: {}
+        product_image: picture
       });
       await newOffer.save()
       console.log('newOffer:', newOffer)
