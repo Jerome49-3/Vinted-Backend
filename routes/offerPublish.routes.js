@@ -42,7 +42,7 @@ router.post('/offer/publish', isAuthenticated, fileUpload(), async (req, res) =>
           { EMPLACEMENT: city }
         ],
         owner: req.user,
-        product_image: picture
+        product_image: dataPicture
       });
       await newOffer.save()
       console.log('newOffer:', newOffer)
