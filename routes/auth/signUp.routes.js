@@ -32,7 +32,7 @@ router.post('/user/signUp', async (req, res) => {
           const salt = uid2(16);
           console.log('salt:', salt)
           const hash = SHA256(password + salt).toString(encBase64);
-          console.log('hashSalt', hashSalt)
+          console.log('hash', hash)
           // const hash = await bcrypt.hash(password, 16);
           console.log('hash', hash)
           const token = uid2(20);

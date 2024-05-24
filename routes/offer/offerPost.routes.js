@@ -24,8 +24,10 @@ router.post('/offer/publish', isAuthenticated, fileUpload(), async (req, res) =>
     const picture = req.files;
     console.log('picture:', picture);
     const dataPicture = await cloudinary.uploader.upload(
-      convertToBase64(req.files.image)
-    );
+      convertToBase64(req.files.image), {
+      upload_preset: 'vinted_preset',
+    }
+);
     console.log('dataPicture:', dataPicture);
     // console.log(dataPicture);
     if (req.body !== undefined) {
@@ -44,6 +46,8 @@ router.post('/offer/publish', isAuthenticated, fileUpload(), async (req, res) =>
         owner: req.user,
         product_image: dataPicture
       });
+      // newOffer.product_image.folder='Home/vinted/offers';
+      // console.log('folderimage:', newOffer.product_image.folder)
       await newOffer.save()
       console.log('newOffer:', newOffer)
       res.status(200).json({ newOffer, message: "produit crée" })

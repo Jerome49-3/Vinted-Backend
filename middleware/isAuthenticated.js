@@ -8,12 +8,12 @@ const isAuthenticated = async (req, res, next) => {
   } else {
     const auth = req.headers.authorization.replace("Bearer ", "");
     if (auth) {
-      // console.log('authMiddleware:', auth);
-      // console.log('auth', auth)
+      console.log('authMiddleware:', auth);
       //chercher l'user par le token
       const user = await User.findOne({
         token: auth.replace("Bearer", "")
       }).select("account");
+      console.log('userMiddleware:', user);
       //si pas d'user
       if (!user) {
         return res.status(401).json({ error: "Unathorized" });
