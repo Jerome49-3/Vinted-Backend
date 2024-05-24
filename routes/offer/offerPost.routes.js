@@ -20,14 +20,23 @@ router.post('/offer/publish', isAuthenticated, fileUpload(), async (req, res) =>
       size,
       color
     } = req.body;
-    // console.log(req.body);
-    const picture = req.files;
+    console.log(req.body);
+    const picUpload = req.files.pictures;
+    if (picUpload === null || picUpload.length === 0) {
+      return res.status(400).json({ message: "bad request" })
+    } else {
+      const arrayFiles = [];
+      for (let i = 0; i < picUpload.length; i++) {
+        const el = picUpload[i];
+        console.log('el:', el);
+      }
+    }
     console.log('picture:', picture);
     const dataPicture = await cloudinary.uploader.upload(
-      convertToBase64(req.files.image), {
+      convertToBase64(picUpload), {
       upload_preset: 'vinted_preset',
     }
-);
+    );
     console.log('dataPicture:', dataPicture);
     // console.log(dataPicture);
     if (req.body !== undefined) {
