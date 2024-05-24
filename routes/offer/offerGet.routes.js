@@ -18,37 +18,37 @@ router.get('/offer', async (req, res) => {
       res.status(200).json({ getOffer, message: "getofferok" })
     }
     else {
-      const filter = {};
+      let filter = {};
       let select = "";
       let limitNum = 0;
       let skipNum = 0;
       let filterSort = {};
       select = "product_name product_price -_id"
       // console.log('page:', page)
-      if (title) {
-        filter.product_name = new RegExp(title, "i");
-      }
-      //si page est différend de undefined et strictement supérieur à 0
       if (page !== undefined || page !== 0) {
-        limitNum = 3;
+        let limitNum = 3;
         skipPage = page - 1;
         skipNum = skipPage * limitNum;
         // console.log('skipPage', skipPage, 'skipNum:', skipNum, 'limitNum:', limitNum)
       }
+      if (title) {
+        filter.product_name = new RegExp(title, "i");
+      }
       if (priceMin !== undefined) {
-        sortFilter = { product_price: { $gte: priceMin } }
+        filter.product_price = { $gte: priceMin };
       }
       if (priceMax !== undefined) {
-        sortFilter = { product_price: { $lte: priceMax } }
+        filter.product_price = { $lte: priceMax };
       }
       if (sort === "price-desc") {
-        sortFilter = { product_price: -1 }
-        console.log("price-desc:", sortFilter);
+        filterSort.product_price = -1
+        console.log("price-desc:", filterSort);
       }
       if (sort === "price-asc") {
-        sortFilter = { product_price: 1 }
-        console.log("price-asc:", sortFilter);
+        filterSort.product_price = 1
+        console.log("price-asc:", filterSort);
       }
+      //si page est différend de undefined et strictement supérieur à 0
       const getOffer = await Offer.find(filter).sort(filterSort).limit(limitNum).skip(skipNum).select(select);
       res.status(200).json({ getOffer, message: "getofferok" })
     }
