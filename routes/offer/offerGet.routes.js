@@ -35,20 +35,19 @@ router.get('/offer', async (req, res) => {
         skipNum = skipPage * limitNum;
         // console.log('skipPage', skipPage, 'skipNum:', skipNum, 'limitNum:', limitNum)
       }
-      if (sort !== undefined) {
-        if (sort === priceMin) {
-          sortFilter = { product_price: { $gte: priceMin } }
-        } else {
-          sortFilter = { product_price: { $gte: priceMax } }
-        }
-        if (sort === "price-desc") {
-          sortFilter = { product_price: -1 }
-          console.log("price-desc:", sortFilter);
-        }
-        else if (sort === "price-asc") {
-          sortFilter = { product_price: 1 }
-          console.log("price-asc:", sortFilter);
-        }
+      if (priceMin !== undefined) {
+        sortFilter = { product_price: { $gte: priceMin } }
+      }
+      if (priceMax !== undefined) {
+        sortFilter = { product_price: { $lte: priceMax } }
+      }
+      if (sort === "price-desc") {
+        sortFilter = { product_price: -1 }
+        console.log("price-desc:", sortFilter);
+      }
+      if (sort === "price-asc") {
+        sortFilter = { product_price: 1 }
+        console.log("price-asc:", sortFilter);
       }
       const getOffer = await Offer.find(filter).sort(filterSort).limit(limitNum).skip(skipNum).select(select);
       res.status(200).json({ getOffer, message: "getofferok" })
