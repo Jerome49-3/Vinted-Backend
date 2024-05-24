@@ -26,7 +26,7 @@ router.get('/offer', async (req, res) => {
       select = "product_name product_price -_id"
       // console.log('page:', page)
       if (page !== undefined || page !== 0) {
-        let limitNum = 3;
+        limitNum = 3;
         skipPage = page - 1;
         skipNum = skipPage * limitNum;
         // console.log('skipPage', skipPage, 'skipNum:', skipNum, 'limitNum:', limitNum)
