@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 app.use(express.json());
-mongoose.connect('mongodb://127.0.0.1:27017/vinted');
+mongoose.connect(process.env.MONGODB_URI);
 const cloudinary = require("cloudinary").v2;
 
 
@@ -35,6 +35,6 @@ app.all("*", (req, res) => {
   console.log("server started");
   res.status(404).json({ message: "All routes" });
 })
-app.listen(3000, () => {
-  console.log("server started");
+app.listen(process.env.PORT, () => {
+  console.log("server started:" + "", process.env.PORT);
 })
