@@ -1,9 +1,15 @@
 const mongoose = require('mongoose')
 
 const User = mongoose.model('User', {
-  email: String,
+  email: {
+    type: String,
+    required: true
+  },
   account: {
-    username: String,
+    username: {
+      type: String,
+      required: true
+    },
     avatar: Object, // nous verrons plus tard comment uploader une image
   },
   newsletter: Boolean,

@@ -4,7 +4,7 @@ const router = express.Router();
 const Offer = require('../../models/Offer')
 
 router.get('/offer', async (req, res) => {
-  // console.log('je suis sur la route /offers')
+  console.log('je suis sur la route /offers')
   const {
     title,
     priceMin,
@@ -14,7 +14,6 @@ router.get('/offer', async (req, res) => {
   } = req.query
   let filter = {};
   let select = "";
-  let limitNum = 0;
   let skipNum = 0;
   let filterSort = {};
   try {
@@ -25,12 +24,6 @@ router.get('/offer', async (req, res) => {
     else {
       select = "product_name product_price -_id"
       // console.log('page:', page)
-      if (page !== undefined || page !== 0) {
-        limitNum = 3;
-        skipPage = page - 1;
-        skipNum = skipPage * limitNum;
-        // console.log('skipPage', skipPage, 'skipNum:', skipNum, 'limitNum:', limitNum)
-      }
       if (title) {
         filter.product_name = new RegExp(title, "i");
       }
@@ -49,12 +42,18 @@ router.get('/offer', async (req, res) => {
         console.log("price-asc:", filterSort);
       }
       //si page est différend de undefined et strictement supérieur à 0
+      if (page !== undefined || page !== 0) {
+        let limitNum = 3;
+        skipPage = page - 1;
+        skipNum = skipPage * limitNum;
+      }
+      console.log('skipPage', skipPage, 'skipNum:', skipNum, 'limitNum:', limitNum)
       const getOffer = await Offer
-      .find(filter)
-      .sort(filterSort)
-      .limit(limitNum)
-      .skip(skipNum)
-      .select(select);
+        .find(filter)
+        .sort(filterSort)
+        .limit(limitNum)
+        .skip(skipNum)
+        .select(select);
       return res.status(200).json({ getOffer, message: "getofferok" })
     }
   } catch (error) {
