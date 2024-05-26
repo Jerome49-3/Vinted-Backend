@@ -5,6 +5,7 @@ const app = express();
 app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI);
 const cloudinary = require("cloudinary").v2;
+//**** npx nodemon index.js ****//
 
 
 const signUpRoutes = require('./routes/auth/signUp.routes');
@@ -32,7 +33,7 @@ app.get('/', (req, res) => {
 });
 
 app.all("*", (req, res) => {
-  console.log("server started");
+  console.log("all routes");
   res.status(404).json({ message: "All routes" });
 })
 app.listen(process.env.PORT, () => {

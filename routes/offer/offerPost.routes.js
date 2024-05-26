@@ -20,25 +20,17 @@ router.post('/offer/publish', isAuthenticated, fileUpload(), async (req, res) =>
       size,
       color
     } = req.body;
-    console.log(req.body);
-    const picUpload = req.files.pictures;
-    if (picUpload === null || picUpload.length === 0) {
-      return res.status(400).json({ message: "bad request" })
+    if (req.files !== null || req.files.pictures.length !== 0) {
+      const picUpload = req.files.pictures;
+      console.log('picturesToUpload:', picUpload);
+      const arrayOfPromises = picUpload.map((picture) => {
+        return cloudinary.uploader.upload(convertToBase64(picture));
+      });
+      const result = await Promise.all(arrayOfPromises);
+      return res.status(200).json(result);
     } else {
-      const arrayFiles = [];
-      for (let i = 0; i < picUpload.length; i++) {
-        const el = picUpload[i];
-        console.log('el:', el);
-      }
+      return res.status(400).json({ message: "bad request" })
     }
-    console.log('picture:', picture);
-    const dataPicture = await cloudinary.uploader.upload(
-      convertToBase64(picUpload), {
-      upload_preset: 'vinted_preset',
-    }
-    );
-    console.log('dataPicture:', dataPicture);
-    // console.log(dataPicture);
     if (req.body !== undefined) {
       // console.log('req.user.id:', req.user.id, 'req.user.account.username', req.user.account.username)
       const newOffer = new Offer({
@@ -53,7 +45,7 @@ router.post('/offer/publish', isAuthenticated, fileUpload(), async (req, res) =>
           { EMPLACEMENT: city }
         ],
         owner: req.user,
-        product_image: dataPicture
+        product_image: result
       });
       // newOffer.product_image.folder='Home/vinted/offers';
       // console.log('folderimage:', newOffer.product_image.folder)
