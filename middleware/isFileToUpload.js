@@ -19,11 +19,11 @@ const isFileToUpload = async (req, res, next) => {
         // console.log("coucouIFResult:", req.uploadOneFile);
         return next();
       } else if (arrayPictures === true) {
-        console.log(
-          "req.files.pictures after else if:",
-          "\n",
-          req.files.pictures
-        );
+        // console.log(
+        //   "req.files.pictures after else if:",
+        //   "\n",
+        //   req.files.pictures
+        // );
         const picUpload = req.files.pictures;
         // console.log("picturesToUpload:", picUpload);
         const arrayOfPromises = picUpload.map((picture) => {

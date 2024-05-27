@@ -14,13 +14,15 @@ router.post(
   isFileToUpload,
   async (req, res) => {
     console.log("je suis sur  la route /offer/publish");
-    console.log('req.body:', req)
+    // console.log("req.body:", req); **** Verification des clé crée dans req
     try {
       const { title, description, price, condition, city, brand, size, color } =
         req.body;
       if (req.body !== undefined) {
-          const resultOneFile = req.uploadOneFile;
-          const resultMultiFile = req.uploadMultiFile;
+        const resultOneFile = req.uploadOneFile;
+        // console.log("resultOneFile on offerRoutes:", resultOneFile);
+        const resultMultiFile = req.uploadMultiFile;
+        // console.log("resultMultiFile on offerRoutes:", resultMultiFile);
         // console.log('req.user.id:', req.user.id, 'req.user.account.username', req.user.account.username)
         const newOffer = new Offer({
           product_name: title,
