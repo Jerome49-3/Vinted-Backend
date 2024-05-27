@@ -5,14 +5,15 @@ const User = require("../../models/User");
 const uid2 = require("uid2");
 const { SHA256 } = require("crypto-js");
 const encBase64 = require("crypto-js/enc-base64");
-const isFileToUpload = require("../../middleware/isFileToUpload");
 const fileUpload = require("express-fileupload");
+const isFileToUpload = require("../../middleware/isFileToUpload");
 // const bcrypt = require('bcrypt');
 
 // const saltRounds = 16;
 
 router.post("/user/signUp", fileUpload(), isFileToUpload, async (req, res) => {
   const { password, username, email } = req.body;
+  const result = req.uploadResult;
   //si le champ username est vide, renvoyer un status Http400
   if (username.length === 0) {
     return res
@@ -42,7 +43,6 @@ router.post("/user/signUp", fileUpload(), isFileToUpload, async (req, res) => {
           // si le hash, token different de null
           if (hash && token !== null) {
             if (req.body !== undefined) {
-              const result = req.uploadResult;
               const newUser = new User({
                 email: email,
                 account: {

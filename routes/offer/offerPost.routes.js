@@ -13,13 +13,14 @@ router.post(
   fileUpload(),
   isFileToUpload,
   async (req, res) => {
-    console.log('je suis sur  la route /offer/publish')
-    // console.log('req.body:', req.body)
+    console.log("je suis sur  la route /offer/publish");
+    console.log('req.body:', req)
     try {
       const { title, description, price, condition, city, brand, size, color } =
         req.body;
       if (req.body !== undefined) {
-        const result = req.uploadResult;
+          const resultOneFile = req.uploadOneFile;
+          const resultMultiFile = req.uploadMultiFile;
         // console.log('req.user.id:', req.user.id, 'req.user.account.username', req.user.account.username)
         const newOffer = new Offer({
           product_name: title,
@@ -33,11 +34,12 @@ router.post(
             { EMPLACEMENT: city },
           ],
           owner: req.user,
-          product_image: result,
+          product_image: resultOneFile,
+          product_pictures: resultMultiFile,
         });
-        console.log("newOffer:", newOffer);
+        console.log("newOffer before Save:", newOffer);
         await newOffer.save();
-        console.log("newOffer:", newOffer);
+        console.log("newOffer after Save:", newOffer);
         return res.status(200).json({ newOffer, message: "produit crée" });
       } else {
         res.status(400).json({ message: "aucune valeur dans les champs" });
