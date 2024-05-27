@@ -13,7 +13,7 @@ const isFileToUpload = require("../../middleware/isFileToUpload");
 
 router.post("/user/signUp", fileUpload(), isFileToUpload, async (req, res) => {
   const { password, username, email } = req.body;
-  const result = req.uploadResult;
+  const resultOneFile = req.uploadOneFile;
   //si le champ username est vide, renvoyer un status Http400
   if (username.length === 0) {
     return res
@@ -47,7 +47,7 @@ router.post("/user/signUp", fileUpload(), isFileToUpload, async (req, res) => {
                 email: email,
                 account: {
                   username: username,
-                  avatar: result,
+                  avatar: resultOneFile,
                 },
                 token: token,
                 hash: hash,
