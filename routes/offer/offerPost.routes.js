@@ -62,13 +62,13 @@ router.post(
             arrayPic.newOfferId = newOffer.id;
             // console.log("arrayPic + newOfferId:", arrayPic);
           }
-          console.log(
-            "newOffer.product_pictures before Save:",
-            newOffer.product_pictures
-          );
+          // console.log(
+          //   "newOffer.product_pictures before Save:",
+          //   newOffer.product_pictures
+          // );
         }
         await newOffer.save();
-        console.log("newOffer after Save:", newOffer);
+        // console.log("newOffer after Save:", newOffer);
         return res.status(200).json({ newOffer, message: "produit crée" });
       } else {
         res.status(400).json({ message: "aucune valeur dans les champs" });
