@@ -11,13 +11,13 @@ const signUpRoutes = require("./routes/auth/signUp.routes");
 const logInRoutes = require("./routes/auth/logIn.routes");
 const offerPost = require("./routes/offer/offerPost.routes");
 const offerGet = require("./routes/offer/offerGet.routes");
-const offerPutDel = require("./routes/offer/offerPutDel.routes");
+// const offerPutDel = require("./routes/offer/offerPutDel.routes");
 
 app.use(signUpRoutes);
 app.use(logInRoutes);
 app.use(offerPost);
 app.use(offerGet);
-app.use(offerPutDel);
+// app.use(offerPutDel);
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,

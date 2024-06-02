@@ -9,4 +9,4 @@
 .env
 
 #en dev
-/middleware/fileUploadPreset.js
+./routes/offerPutDel.routes.js
