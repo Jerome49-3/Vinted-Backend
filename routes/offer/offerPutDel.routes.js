@@ -14,12 +14,19 @@ router.put(
   async (req, res) => {
     console.log("je suis sur la route PUT /offer/:id");
     //faire une recherche par l'id de l'offre
+    const findOfferByID = Offer.findById(req.params.id);
+    const resultOneFile = req.uploadOneFile;
+    const resultMultiFile = req.uploadMultiFile;
+    // si l'id est valide
     if (mongoose.Types.ObjectId.isValid(findOfferByID)) {
-      const findOfferByID = Offer.findById(req.params.id);
+      console.log("findOfferByID", findOfferByID);
+      //si l'id de l'offre est trouvé on vérifie si l'user à modifié l'image:
+      // si req.uploadOneFile(resultOneFile).public_id est differend de findOfferByID.product_image.public_id
+      if (resultOneFile.public_id !== findOfferByID.product_image.public_id) {
+      }
+
       res.status(200).json({ findOfferByID });
       if (req.body) {
-        const resultOneFile = req.uploadOneFile;
-        const resultMultiFile = req.uploadMultiFile;
         const {
           title,
           description,
