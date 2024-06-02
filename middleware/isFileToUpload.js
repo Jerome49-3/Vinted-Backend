@@ -18,6 +18,9 @@ const isFileToUpload = async (req, res, next) => {
       if (arrayPictures === false) {
         //**** je stocke le nom de l'image dans req pour la réutiliser dans mes routes ****//
         req.picOneName = pictureToUpload.name;
+        //**** Je vérifie le type de req.picOneName ****/
+        // const typof = typeof req.picOneName;
+        // console.log("typeof de req.picOneName:", typof);
         // console.log("req.picOneName:", req.picOneName);
         //**** on convertit le buffer (données en language binaire, temporaire pour être utilisé) de l'image en base64 pour etre compris par cloudinary ****//
         const result = await cloudinary.uploader.upload(
@@ -46,8 +49,8 @@ const isFileToUpload = async (req, res, next) => {
           console.log("picUpload[i].name:", picUpload[i].name);
           //**** recuperer le nom de chaque image ****//
           const el = picUpload[i].name;
-          //**** stocker chaque nom dans un tableau ****//
-          arrayPicsName.push(el);
+          //**** stocker chaque nom dans un tableau d'object ****//
+          arrayPicsName.push({ index: i, name: el });
           // console.log("arrayPicsName:", arrayPicsName);
         }
         //**** pour chaque image convertir en base64 et envoyer les envoyer les images à cloudinary ****//
@@ -59,7 +62,7 @@ const isFileToUpload = async (req, res, next) => {
         // console.log("resultPromise:", result);
         //**** stocker le tableau de nom d'images dans req ****//
         req.picsName = arrayPicsName;
-        console.log("req.picsName:", req.picsName);
+        // console.log("req.picsName:", req.picsName);
         //**** stocker les informations des images dans req ****//
         req.uploadMultiFile = result;
         //console.log("coucouIFResult:", req.uploadMultiFile);

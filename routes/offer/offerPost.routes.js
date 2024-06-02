@@ -19,9 +19,15 @@ router.post(
       const { title, description, price, condition, city, brand, size, color } =
         req.body;
       if (req.body !== undefined) {
+        //**** si une image: je récupère l'image stocké dans req ****//
         const resultOneFile = req.uploadOneFile;
         // console.log("resultOneFile on offerRoutes:", resultOneFile);
+        //**** si une image: je récupère le nom de l'image stocké dans req ****//
+        const PicName = req.picOneName;
+        //**** si plusieurs images: je récupère les images stocké dans req ****//
         const resultMultiFile = req.uploadMultiFile;
+        //**** si plusieurs images: je récupère les noms d'images stocké dans req ****//
+        const multiPicName = req.uploadMultiFile;
         // console.log("resultMultiFile on offerRoutes:", resultMultiFile);
         // console.log('req.user.id:', req.user.id, 'req.user.account.username', req.user.account.username)
         const newOffer = new Offer({
@@ -37,7 +43,9 @@ router.post(
           ],
           owner: req.user,
           product_image: resultOneFile,
+          product_nameImg: PicName,
           product_pictures: resultMultiFile,
+          product_namePics: multiPicName,
         });
         // console.log("newOffer before Save:", newOffer);
         // console.log("newOffer.id before Save:", newOffer.id);
@@ -52,9 +60,9 @@ router.post(
           //   newOffer.product_image
           // );
         }
-        //si plusieurs images
+        //**** si plusieurs images ****//
         else if (newOffer.product_pictures) {
-          // je stocke l'id dans chaque object image du tableau newOffer.product_pictures
+          //**** je stocke l'id dans chaque object image du tableau newOffer.product_pictures ****//
           for (let i = 0; i < newOffer.product_pictures.length; i++) {
             // console.log("i:", i);
             const arrayPic = newOffer.product_pictures[i];
