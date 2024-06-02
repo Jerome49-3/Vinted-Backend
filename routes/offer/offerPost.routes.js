@@ -39,7 +39,34 @@ router.post(
           product_image: resultOneFile,
           product_pictures: resultMultiFile,
         });
-        console.log("newOffer before Save:", newOffer);
+        // console.log("newOffer before Save:", newOffer);
+        // console.log("newOffer.id before Save:", newOffer.id);
+        // console.log(
+        //   "newOffer.product_image before Save:",
+        //   newOffer.product_image
+        // );
+        if (newOffer.product_image) {
+          // newOffer.product_image.newOfferId = newOffer.id;
+          // console.log(
+          //   "newOffer.product_image before Save:",
+          //   newOffer.product_image
+          // );
+        }
+        //si plusieurs images
+        else if (newOffer.product_pictures) {
+          // je stocke l'id dans chaque object image du tableau newOffer.product_pictures
+          for (let i = 0; i < newOffer.product_pictures.length; i++) {
+            // console.log("i:", i);
+            const arrayPic = newOffer.product_pictures[i];
+            // console.log("arrayPic without newOfferId:", arrayPic);
+            arrayPic.newOfferId = newOffer.id;
+            // console.log("arrayPic + newOfferId:", arrayPic);
+          }
+          console.log(
+            "newOffer.product_pictures before Save:",
+            newOffer.product_pictures
+          );
+        }
         await newOffer.save();
         console.log("newOffer after Save:", newOffer);
         return res.status(200).json({ newOffer, message: "produit crée" });

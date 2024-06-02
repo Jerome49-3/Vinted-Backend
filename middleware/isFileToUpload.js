@@ -4,7 +4,7 @@ const convertToBase64 = require("../utils/convertToBase64");
 
 const isFileToUpload = async (req, res, next) => {
   try {
-    console.log("req.files.pictures before if:", "\n", req.files);
+    // console.log("req.files.pictures before if:", "\n", req.files);
     if (req.files !== null || req.files.pictures !== 0) {
       const pictureToUpload = req.files.pictures;
       // console.log("pictureToUpload:", pictureToUpload);
