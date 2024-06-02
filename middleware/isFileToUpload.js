@@ -3,6 +3,11 @@ const fileUpload = require("express-fileupload");
 const convertToBase64 = require("../utils/convertToBase64");
 
 const isFileToUpload = async (req, res, next) => {
+  // const options = {
+  //   use_filename: true,
+  //   unique_filename: false,
+  //   overwrite: true,
+  // };
   try {
     //**** verifier la précense de req.files.pîctures ****//
     // console.log("req.files.pictures before if:", "\n", req.files);
@@ -21,8 +26,12 @@ const isFileToUpload = async (req, res, next) => {
         //**** Je vérifie le type de req.picOneName ****/
         // const typof = typeof req.picOneName;
         // console.log("typeof de req.picOneName:", typof);
-        // console.log("req.picOneName:", req.picOneName);
+        console.log("req.picOneName:", req.picOneName);
         //**** on convertit le buffer (données en language binaire, temporaire pour être utilisé) de l'image en base64 pour etre compris par cloudinary ****//
+        //*** NE FONCTIONNE PAS ****//
+        // const result = await cloudinary.uploader.upload(
+        //   convertToBase64(pictureToUpload, options)
+        // );
         const result = await cloudinary.uploader.upload(
           convertToBase64(pictureToUpload)
         );
@@ -41,12 +50,12 @@ const isFileToUpload = async (req, res, next) => {
         // );
         //**** je stocke req.files.pictures dans une constante ****//
         const picUpload = req.files.pictures;
-        // console.log("picUpload:", picUpload);
+        console.log("picUpload:", picUpload);
         //**** declarer un tableau vide ****//
         let arrayPicsName = [];
         for (let i = 0; i < picUpload.length; i++) {
-          console.log("i:", i);
-          console.log("picUpload[i].name:", picUpload[i].name);
+          // console.log("i:", i);
+          // console.log("picUpload[i].name:", picUpload[i].name);
           //**** recuperer le nom de chaque image ****//
           const el = picUpload[i].name;
           //**** stocker chaque nom dans un tableau d'object ****//
@@ -54,7 +63,13 @@ const isFileToUpload = async (req, res, next) => {
           // console.log("arrayPicsName:", arrayPicsName);
         }
         //**** pour chaque image convertir en base64 et envoyer les envoyer les images à cloudinary ****//
+        //*** NE FONCTIONNE PAS ****//
+        // const arrayOfPromises = picUpload.map((picture) => {
+        //   console.log("picture:", picture);
+        //   return cloudinary.uploader.upload(convertToBase64(picture, options));
+        // });
         const arrayOfPromises = picUpload.map((picture) => {
+          // console.log("picture:", picture);
           return cloudinary.uploader.upload(convertToBase64(picture));
         });
         //**** attendre le fin de l'upload pour tous les fichiers et les stocker dans une constante ****//
@@ -62,7 +77,7 @@ const isFileToUpload = async (req, res, next) => {
         // console.log("resultPromise:", result);
         //**** stocker le tableau de nom d'images dans req ****//
         req.picsName = arrayPicsName;
-        // console.log("req.picsName:", req.picsName);
+        console.log("req.picsName:", req.picsName);
         //**** stocker les informations des images dans req ****//
         req.uploadMultiFile = result;
         //console.log("coucouIFResult:", req.uploadMultiFile);

@@ -27,7 +27,7 @@ router.post(
         //**** si plusieurs images: je récupère les images stocké dans req ****//
         const resultMultiFile = req.uploadMultiFile;
         //**** si plusieurs images: je récupère les noms d'images stocké dans req ****//
-        const multiPicName = req.uploadMultiFile;
+        const multiPicName = req.picsName;
         // console.log("resultMultiFile on offerRoutes:", resultMultiFile);
         // console.log('req.user.id:', req.user.id, 'req.user.account.username', req.user.account.username)
         const newOffer = new Offer({
