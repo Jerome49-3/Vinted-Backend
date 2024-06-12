@@ -1,5 +1,4 @@
 const cloudinary = require("cloudinary").v2;
-const fileUpload = require("express-fileupload");
 const convertToBase64 = require("../utils/convertToBase64");
 
 const isFileToUpload = async (req, res, next) => {
