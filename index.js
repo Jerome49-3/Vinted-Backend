@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
 app.use(express.json());
@@ -12,7 +13,7 @@ const logInRoutes = require("./routes/auth/logIn.routes");
 const offerPost = require("./routes/offer/offerPost.routes");
 const offerGet = require("./routes/offer/offerGet.routes");
 // const offerPutDel = require("./routes/offer/offerPutDel.routes");
-
+app.use(cors());
 app.use(signUpRoutes);
 app.use(logInRoutes);
 app.use(offerPost);
