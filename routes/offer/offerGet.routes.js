@@ -12,9 +12,7 @@ router.get("/offer", async (req, res) => {
   let filterSort = {};
   try {
     if (req.query !== undefined) {
-      const getOffer = await Offer.find().select(
-        "product_name product_price -_id"
-      );
+      const getOffer = await Offer.find();
       // const getOffer = await Offer.find().select("product_name product_price -_id");
       res.status(200).json({ getOffer, message: "getofferok" });
     } else {
