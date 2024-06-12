@@ -22,7 +22,10 @@ const isFileToUpload = async (req, res, next) => {
       if (arrayPictures === false) {
         //**** on convertit le buffer (données en language binaire, temporaire pour être utilisé) de l'image en base64 pour etre compris par cloudinary ****//
         const result = await cloudinary.uploader.upload(
-          convertToBase64(pictureToUpload)
+          convertToBase64(pictureToUpload),
+          {
+            folder: "vinted/offers/" + newOffer.id,
+          }
         );
         // console.log("resultnotPromise:", result);
         //**** je stocke les données de la conversion en base64 du buffer de l'image dans req ****//
@@ -43,14 +46,13 @@ const isFileToUpload = async (req, res, next) => {
         //**** pour chaque image convertir en base64 et envoyer les envoyer les images à cloudinary ****//
         const arrayOfPromises = picUpload.map((picture) => {
           // console.log("picture:", picture);
-          return cloudinary.uploader.upload(convertToBase64(picture));
+          return cloudinary.uploader.upload(convertToBase64(picture), {
+            folder: "vinted/offers/" + newOffer.id,
+          });
         });
         //**** attendre le fin de l'upload pour tous les fichiers et les stocker dans une constante ****//
         const result = await Promise.all(arrayOfPromises);
         // console.log("resultPromise:", result);
-        //**** stocker le tableau de nom d'images dans req ****//
-        req.picsName = arrayPicsName;
-        console.log("req.picsName:", req.picsName);
         //**** stocker les informations des images dans req ****//
         req.uploadMultiFile = result;
         //console.log("coucouIFResult:", req.uploadMultiFile);
