@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Offer = require("../../models/Offer.js");
 const isAuthenticated = require("../../middleware/isAuthenticated.js");
-const isFileToUpload = require("../../middleware/isFileToUpload.js");
 const fileUpload = require("express-fileupload");
+const cloudinary = require("cloudinary").v2;
+const convertToBase64 = require("../../utils/convertToBase64.js");
 
 router.post(
   "/offer/publish",
@@ -12,21 +13,17 @@ router.post(
   async (req, res) => {
     console.log("je suis sur  la route /offer/publish");
     //  Verification des clé crée dans req
-    console.log("req.body:", req);
+    // console.log("req.body:", req);
     try {
       const { title, description, price, condition, city, brand, size, color } =
         req.body;
       if (req.body !== undefined) {
-        const resultOneFile = req.uploadOneFile;
-        console.log("resultOneFile on offerRoutes:", resultOneFile);
-        const resultMultiFile = req.uploadMultiFile;
-        console.log("resultMultiFile on offerRoutes:", resultMultiFile);
-        console.log(
-          "req.user.id:",
-          req.user.id,
-          "req.user.account.username",
-          req.user.account.username
-        );
+        // console.log(
+        //   "req.user.id:",
+        //   req.user.id,
+        //   "req.user.account.username",
+        //   req.user.account.username
+        // );
         const newOffer = new Offer({
           product_name: title,
           product_description: description,
@@ -39,8 +36,6 @@ router.post(
             { EMPLACEMENT: city },
           ],
           owner: req.user,
-          product_image: resultOneFile,
-          product_pictures: resultMultiFile,
         });
         console.log("newOffer before Save:", newOffer);
         try {
@@ -66,9 +61,7 @@ router.post(
               // console.log("resultnotPromise:", result);
               //**** je stocke les données de la conversion en base64 du buffer de l'image dans req ****//
               req.uploadOneFile = result;
-              // console.log("coucouIFResult:", req.uploadOneFile);
-              //**** on quitte le middleware et passe à la suite du code ****//
-              return next();
+              console.log("coucouIFResult:", req.uploadOneFile);
               //**** si arrayPictures est un tableau ****//
             } else if (arrayPictures === true) {
               // console.log(
@@ -91,9 +84,7 @@ router.post(
               // console.log("resultPromise:", result);
               //**** stocker les informations des images dans req ****//
               req.uploadMultiFile = result;
-              //console.log("coucouIFResult:", req.uploadMultiFile);
-              //**** on quitte le middleware et passe à la suite du code ****//
-              return next();
+              console.log("coucouIFResult:", req.uploadMultiFile);
             }
           }
           //**** si req.files.pîctures est null ou 0, on retourne une erreur 400 bad request ****//
@@ -104,6 +95,8 @@ router.post(
           //**** si le try echoue (erreur server), on retourne une erreur ****//
           console.log("error.message:", "\n", error.message);
         }
+        newOffer.product_image = req.uploadOneFile;
+        newOffer.product_pictures = req.uploadMultiFile;
         await newOffer.save();
         console.log("newOffer after Save:", newOffer);
         return res.status(200).json({ newOffer, message: "produit crée" });
