@@ -11,7 +11,7 @@ const isFileToUpload = require("../../middleware/isFileToUpload");
 
 // const saltRounds = 16;
 
-router.post("/user/signUp", fileUpload(), isFileToUpload, async (req, res) => {
+router.post("/user/signup", fileUpload(), isFileToUpload, async (req, res) => {
   const { password, username, email } = req.body;
   const resultOneFile = req.uploadOneFile;
   //si le champ username est vide, renvoyer un status Http400
