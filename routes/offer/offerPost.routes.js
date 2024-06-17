@@ -55,7 +55,7 @@ router.post(
               const result = await cloudinary.uploader.upload(
                 convertToBase64(pictureToUpload),
                 {
-                  folder: "vinted/offers/" + newOffer.id,
+                  folder: "vinted/offers/" + newOffer._id,
                 }
               );
               // console.log("resultnotPromise:", result);
@@ -76,7 +76,7 @@ router.post(
               const arrayOfPromises = picUpload.map((picture) => {
                 // console.log("picture:", picture);
                 return cloudinary.uploader.upload(convertToBase64(picture), {
-                  folder: "vinted/offers/" + newOffer.id,
+                  folder: "vinted/offers/" + newOffer._id,
                 });
               });
               //**** attendre le fin de l'upload pour tous les fichiers et les stocker dans une constante ****//
@@ -95,6 +95,7 @@ router.post(
           //**** si le try echoue (erreur server), on retourne une erreur ****//
           console.log("error.message:", "\n", error.message);
         }
+        // console.log("newOffer._id:", newOffer._id);
         newOffer.product_image = req.uploadOneFile;
         newOffer.product_pictures = req.uploadMultiFile;
         await newOffer.save();

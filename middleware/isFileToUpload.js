@@ -3,8 +3,9 @@ const fileUpload = require("express-fileupload");
 const convertToBase64 = require("../utils/convertToBase64");
 const isFileToUpload = async (req, res, next) => {
   try {
-    console.log("req.files.pictures before if:", "\n", req.files);
+    // console.log("req.files.pictures before if:", "\n", req.files);
     if (req.files !== undefined || req.files.pictures !== 0) {
+      //**** stocker req.files.pîctures ds une variable ****//
       const pictureToUpload = req.files.pictures;
       // console.log("pictureToUpload:", pictureToUpload);
       const arrayPictures = Array.isArray(pictureToUpload);
@@ -44,6 +45,7 @@ const isFileToUpload = async (req, res, next) => {
     }
   } catch (error) {
     console.log("error.message:", "\n", error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 module.exports = isFileToUpload;

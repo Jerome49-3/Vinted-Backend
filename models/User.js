@@ -1,16 +1,20 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const User = mongoose.model('User', {
+const User = mongoose.model("User", {
   email: {
     type: String,
-    required: true
+    required: true,
   },
   account: {
     username: {
       type: String,
-      required: true
+      required: true,
     },
-    avatar: Object, // nous verrons plus tard comment uploader une image
+    avatar: {
+      type: Object,
+      default:
+        "https://asset.cloudinary.com/djk45mwhr/16e96edde6d78396188a2000bb61738e",
+    }, // nous verrons plus tard comment uploader une image
   },
   newsletter: Boolean,
   token: String,
