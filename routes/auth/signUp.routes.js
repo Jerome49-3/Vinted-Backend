@@ -53,7 +53,14 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
               });
               console.log("newUser:", newUser);
               await newUser.save();
-              res.status(201).json({ newUser, message: "user created" });
+              res
+                .status(201)
+                .json({
+                  _id: newUser._id,
+                  token: newUser.token,
+                  account: newUser.account,
+                  message: "user created",
+                });
             }
           } else {
             return res
