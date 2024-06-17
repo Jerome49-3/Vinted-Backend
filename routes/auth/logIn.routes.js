@@ -14,28 +14,32 @@ router.post("/user/login", async (req, res) => {
       const user = await User.findOne({ email: email });
       // console.log('user:', user);
       //decrypter le hash
-      if (!user) {
-        return res.status(400).json({ message: "email or password are wrong" });
-      }
-      const pwdHash = SHA256(password + user.salt).toString(encBase64);
-      // const match = await bcrypt.compare(password, user.hash);
-      if (pwdHash === user.hash) {
-        // console.log('matchOk')
-        // console.log('user:', user);
-        res.status(200).json({
-          _id: user.id,
-          token: user.token,
-          account: user.account,
-          message: "login succesfully",
-        });
+      // if (!user) {
+      //   res.status(400).json({ message: "email or password are wrong" });
+      // }
+      if (user) {
+        const pwdHash = SHA256(password + user.salt).toString(encBase64);
+        // const match = await bcrypt.compare(password, user.hash);
+        if (pwdHash === user.hash) {
+          // console.log('matchOk')
+          // console.log('user:', user);
+          res.status(200).json({
+            _id: user.id,
+            token: user.token,
+            account: user.account,
+            message: "login succesfully",
+          });
+        } else {
+          res.status(401).json({ message: "Unanthorized" });
+        }
       } else {
-        res
-          .status(400)
-          .json({ message: "email or password are wrong: try again" });
+        res.status(401).json({ message: "Unanthorized" });
       }
+    } else {
+      res.status(400).json({ message: "Bad request" });
     }
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     console.log(error.status);
   }
 });
