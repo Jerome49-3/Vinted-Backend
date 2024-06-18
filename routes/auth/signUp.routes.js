@@ -10,7 +10,8 @@ const isFileToUpload = require("../../middleware/isFileToUpload");
 
 // const saltRounds = 16;
 
-router.post("/user/signup", fileUpload(), async (req, res) => {
+router.post("/signup", fileUpload(), async (req, res) => {
+  res.status(200).json({ message: "je suis sur la route /signup" });
   const { password, username, email, newsletter } = req.body;
   //si le champ username est vide, renvoyer un status Http400
   if (username.length === 0) {
@@ -53,14 +54,12 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
               });
               console.log("newUser:", newUser);
               await newUser.save();
-              res
-                .status(201)
-                .json({
-                  _id: newUser._id,
-                  token: newUser.token,
-                  account: newUser.account,
-                  message: "user created",
-                });
+              res.status(201).json({
+                _id: newUser._id,
+                token: newUser.token,
+                account: newUser.account,
+                message: "user created",
+              });
             }
           } else {
             return res

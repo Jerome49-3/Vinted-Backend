@@ -6,6 +6,9 @@ const app = express();
 app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI);
 const cloudinary = require("cloudinary").v2;
+const stripe = require("stripe")(
+  "sk_test_51PSyHURpe0ngd0zS9aV14bS07pYbc3RNQksobgldvwiG9s7x74zmvJi9llrgnB9LQ9nx7TIMahoSbPni6gj4uI2E00tXyVqW09"
+);
 //**** npx nodemon index.js ****//
 
 const signUpRoutes = require("./routes/auth/signUp.routes");
@@ -14,8 +17,8 @@ const offerPost = require("./routes/offer/offerPost.routes");
 const offerGet = require("./routes/offer/offerGet.routes");
 // const offerPutDel = require("./routes/offer/offerPutDel.routes");
 app.use(cors());
-app.use(signUpRoutes);
-app.use(logInRoutes);
+app.use("/user", signUpRoutes);
+app.use("/user", logInRoutes);
 app.use(offerPost);
 app.use(offerGet);
 // app.use(offerPutDel);

@@ -4,7 +4,8 @@ const User = require("../../models/User");
 const { SHA256 } = require("crypto-js");
 const encBase64 = require("crypto-js/enc-base64");
 
-router.post("/user/login", async (req, res) => {
+router.post("/login", async (req, res) => {
+  res.status(200).json({ message: "je suis sur la route /login" });
   try {
     //destructurer req.body
     const { password, email } = req.body;
