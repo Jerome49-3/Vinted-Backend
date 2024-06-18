@@ -87,16 +87,7 @@ router.get("/offer/:id", async (req, res) => {
           .json({ offerObj, message: "voila l'article souhaité" });
       }
     } catch (error) {
-      console.log(
-        "error:",
-        error,
-        "\n",
-        "error.message:",
-        error.message,
-        "\n",
-        "error.message:",
-        error.message
-      );
+      console.log("error:", error, "\n", "error.message:", error.message);
       return res.status(500).json({ error: error.message });
     }
   } else {

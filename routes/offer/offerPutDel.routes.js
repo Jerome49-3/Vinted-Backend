@@ -70,7 +70,7 @@ router.delete("/offer/:id", isAuthenticated, fileUpload(), async (req, res) => {
     console.log(error.message);
     res.status(500).json({ message: error.message });
   }
-  res.status(200).json({ message: "le médoc à été supprimé" });
+  res.status(200).json({ message: "l'offre à été supprimé" });
 });
 
 module.exports = router;
