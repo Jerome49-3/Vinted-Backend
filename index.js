@@ -9,7 +9,7 @@ const cloudinary = require("cloudinary").v2;
 const stripe = require("stripe")(process.env.STRIPE_KEY_SECRET);
 //**** npx nodemon index.js ****//
 //routes
-const signUpRoutes = require("./routes/auth/signUp.routes");
+const signUpRoutes = require("./routes/auth/signup.routes");
 const logInRoutes = require("./routes/auth/logIn.routes");
 const offerPost = require("./routes/offer/offerPost.routes");
 const offerGet = require("./routes/offer/offerGet.routes");

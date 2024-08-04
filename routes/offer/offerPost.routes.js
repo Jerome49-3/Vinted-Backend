@@ -17,13 +17,38 @@ router.post(
     try {
       const { title, description, price, condition, city, brand, size, color } =
         req.body;
+      console.log(
+        "title in /offer/publish:",
+        title,
+        "\n",
+        "description in /offer/publish:",
+        description,
+        "\n",
+        "price in /offer/publish:",
+        price,
+        "\n",
+        "condition in /offer/publish:",
+        condition,
+        "\n",
+        "city in /offer/publish:",
+        city,
+        "\n",
+        "brand in /offer/publish:",
+        brand,
+        "\n",
+        "size in /offer/publish:",
+        size,
+        "\n",
+        "color in /offer/publish:",
+        color
+      );
       if (req.body !== undefined) {
-        // console.log(
-        //   "req.user.id:",
-        //   req.user.id,
-        //   "req.user.account.username",
-        //   req.user.account.username
-        // );
+        console.log(
+          "req.user.id:",
+          req.user.id,
+          "req.user.account.username",
+          req.user.account.username
+        );
         const newOffer = new Offer({
           product_name: title,
           product_description: description,
@@ -37,59 +62,83 @@ router.post(
           ],
           owner: req.user,
         });
-        console.log("newOffer before Save:", newOffer);
+        // console.log("newOffer before Save:", newOffer);
         try {
           //**** verifier la précense de req.files.pîctures ****//
-          // console.log("req.files.pictures before if:", "\n", req.files);
+          // console.log("req.files before if:", "\n", req.files);
+          // console.log(
+          //   "req.files.pictures before if:",
+          //   "\n",
+          //   req.files.pictures
+          // );
+          console.log(
+            "req.files.pictures.size before if:",
+            "\n",
+            req.files.pictures.size
+          );
           //**** si req.files.pîctures est différent de null ou de 0 ****//
-          if (req.files !== null || req.files.pictures !== 0) {
-            //**** stocker req.files.pîctures ds une variable ****//
-            const pictureToUpload = req.files.pictures;
-            // console.log("pictureToUpload:", pictureToUpload);
-            //**** stocker la vérification de pictureToUpload dans une variable const 'arrayPictures' pour savoir si c'est un tableau ****//
-            const arrayPictures = Array.isArray(pictureToUpload);
-            // console.log("arrayPictures:", arrayPictures);
-            //**** si 'arrayPictures' n'est pas un tableau ****//
-            if (arrayPictures === false) {
-              //**** on convertit le buffer (données en language binaire, temporaire pour être utilisé) de l'image en base64 pour etre compris par cloudinary ****//
-              const result = await cloudinary.uploader.upload(
-                convertToBase64(pictureToUpload),
-                {
-                  folder: "vinted/offers/" + newOffer._id,
-                }
-              );
-              // console.log("resultnotPromise:", result);
-              //**** je stocke les données de la conversion en base64 du buffer de l'image dans req ****//
-              req.uploadOneFile = result;
-              console.log("coucouIFResult:", req.uploadOneFile);
-              //**** si arrayPictures est un tableau ****//
-            } else if (arrayPictures === true) {
-              // console.log(
-              //   "req.files.pictures after else if:",
-              //   "\n",
-              //   req.files.pictures
-              // );
-              //**** je stocke req.files.pictures dans une constante ****//
-              const picUpload = req.files.pictures;
-              // console.log("picUpload:", picUpload);
-              //**** pour chaque image convertir en base64 et envoyer les envoyer les images à cloudinary ****//
-              const arrayOfPromises = picUpload.map((picture) => {
-                // console.log("picture:", picture);
-                return cloudinary.uploader.upload(convertToBase64(picture), {
-                  folder: "vinted/offers/" + newOffer._id,
+          if (req.files !== null && req.files.pictures !== 0) {
+            if (req.files.pictures.size < 10485760) {
+              //**** stocker req.files.pîctures ds une variable ****//
+              const pictureToUpload = req.files.pictures;
+              // console.log("pictureToUpload:", pictureToUpload);
+              //**** stocker la vérification de pictureToUpload dans une variable const 'arrayPictures' pour savoir si c'est un tableau ****//
+              const arrayPictures = Array.isArray(pictureToUpload);
+              // console.log("arrayPictures:", arrayPictures);
+              //**** si 'arrayPictures' n'est pas un tableau ****//
+              if (arrayPictures === false) {
+                //**** on convertit le buffer (données en language binaire, temporaire pour être utilisé) de l'image en base64 pour etre compris par cloudinary ****//
+                const result = await cloudinary.uploader.upload(
+                  convertToBase64(pictureToUpload),
+                  {
+                    folder: "vinted/offers/" + newOffer._id,
+                  }
+                );
+                // console.log("resultnotPromise:", result);
+                //**** je stocke les données de la conversion en base64 du buffer de l'image dans req ****//
+                req.uploadOneFile = result;
+                // console.log(
+                //   "req.uploadOneFile in /publish:",
+                //   req.uploadOneFile
+                // );
+                //**** si arrayPictures est un tableau ****//
+              } else if (arrayPictures === true) {
+                // console.log(
+                //   "req.files.pictures after else if:",
+                //   "\n",
+                //   req.files.pictures
+                // );
+                //**** je stocke req.files.pictures dans une constante ****//
+                const picUpload = req.files.pictures;
+                // console.log("picUpload:", picUpload);
+                //**** pour chaque image convertir en base64 et envoyer les envoyer les images à cloudinary ****//
+                const arrayOfPromises = picUpload.map((picture) => {
+                  // console.log("picture:", picture);
+                  return cloudinary.uploader.upload(convertToBase64(picture), {
+                    folder: "vinted/offers/" + newOffer._id,
+                  });
                 });
-              });
-              //**** attendre le fin de l'upload pour tous les fichiers et les stocker dans une constante ****//
-              const result = await Promise.all(arrayOfPromises);
-              // console.log("resultPromise:", result);
-              //**** stocker les informations des images dans req ****//
-              req.uploadMultiFile = result;
-              console.log("coucouIFResult:", req.uploadMultiFile);
+                //**** attendre le fin de l'upload pour tous les fichiers et les stocker dans une constante ****//
+                const result = await Promise.all(arrayOfPromises);
+                // console.log("resultPromise:", result);
+                //**** stocker les informations des images dans req ****//
+                req.uploadMultiFile = result;
+                // console.log(
+                //   "req.uploadMultiFile in /publish:",
+                //   req.uploadMultiFile
+                // );
+              }
+            } else {
+              return res
+                .status(400)
+                .json({ message: "image size too large, max: 10485760 bytes" });
             }
           }
-          //**** si req.files.pîctures est null ou 0, on retourne une erreur 400 bad request ****//
+          //**** si req.files.pîctures est null et different de 0, on retourne une erreur 400 bad request ****//
           else {
-            return res.status(400).json({ result, message: "bad request" });
+            return res
+              .status(400)
+              .json({ message: "bad request in /offer/publish" });
           }
         } catch (error) {
           //**** si le try echoue (erreur server), on retourne une erreur ****//

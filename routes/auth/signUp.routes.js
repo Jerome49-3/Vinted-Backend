@@ -5,14 +5,25 @@ const uid2 = require("uid2");
 const { SHA256 } = require("crypto-js");
 const encBase64 = require("crypto-js/enc-base64");
 const fileUpload = require("express-fileupload");
-const isFileToUpload = require("../../middleware/isFileToUpload");
 // const bcrypt = require('bcrypt');
-
 // const saltRounds = 16;
 
 router.post("/signup", fileUpload(), async (req, res) => {
-  res.status(200).json({ message: "je suis sur la route /signup" });
+  // res.status(200).json({ message: "je suis sur la route /signup" });
   const { password, username, email, newsletter } = req.body;
+  // console.log(
+  //   "password in signup:",
+  //   password,
+  //   "\n",
+  //   "username in signup:",
+  //   username,
+  //   "\n",
+  //   "email in signup:",
+  //   email,
+  //   "\n",
+  //   "newsletter in signup:",
+  //   newsletter
+  // );
   //si le champ username est vide, renvoyer un status Http400
   if (username.length === 0) {
     return res
@@ -22,6 +33,7 @@ router.post("/signup", fileUpload(), async (req, res) => {
   //si le mot de passe est differend d'undefined
   if (password !== undefined && email !== undefined) {
     const userfindWithEmail = await User.findOne({ email: email });
+    // console.log("userfindWithEmail in signup:", userfindWithEmail);
     if (userfindWithEmail) {
       return res
         .status(400)
@@ -32,12 +44,12 @@ router.post("/signup", fileUpload(), async (req, res) => {
         if (password) {
           //génerer le salt hash, token
           const salt = uid2(16);
-          console.log("salt:", salt);
+          // console.log("salt in signup:", salt);
           const hash = SHA256(password + salt).toString(encBase64);
-          console.log("hash", hash);
+          // console.log("hash in signup:", hash);
           // const hash = await bcrypt.hash(password, 16);
-          console.log("hash", hash);
-          const token = uid2(20);
+          // console.log("hash in signup:", hash);
+          const token = uid2(64);
           // console.log('token:', token)
           // si le hash, token different de null
           if (hash && token !== null) {
@@ -52,7 +64,7 @@ router.post("/signup", fileUpload(), async (req, res) => {
                 hash: hash,
                 salt: salt,
               });
-              console.log("newUser:", newUser);
+              console.log("newUser in signup:", newUser);
               await newUser.save();
               res.status(201).json({
                 _id: newUser._id,

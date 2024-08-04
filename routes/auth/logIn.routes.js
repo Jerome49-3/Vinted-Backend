@@ -9,6 +9,16 @@ router.post("/login", async (req, res) => {
   try {
     //destructurer req.body
     const { password, email } = req.body;
+    console.log(
+      "password:",
+      password,
+      "\n",
+      "username:",
+      username,
+      "\n",
+      "email:",
+      email
+    );
     //si password et email n'est pas undefined
     if (password !== undefined && email !== undefined) {
       // trouver l'user avec son email
