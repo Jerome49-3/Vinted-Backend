@@ -13,7 +13,7 @@ const User = mongoose.model("User", {
     avatar: {
       type: Object,
       default:
-        "https://asset.cloudinary.com/djk45mwhr/16e96edde6d78396188a2000bb61738e",
+        "https://res.cloudinary.com/djk45mwhr/image/upload/fl_preserve_transparency/v1718626269/tjognak2go4rnl4dl1xl.jpg?_s=public-apps",
     }, // nous verrons plus tard comment uploader une image
   },
   newsletter: Boolean,
