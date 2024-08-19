@@ -17,31 +17,31 @@ router.post(
     try {
       const { title, description, price, condition, city, brand, size, color } =
         req.body;
-      console.log(
-        "title in /offer/publish:",
-        title,
-        "\n",
-        "description in /offer/publish:",
-        description,
-        "\n",
-        "price in /offer/publish:",
-        price,
-        "\n",
-        "condition in /offer/publish:",
-        condition,
-        "\n",
-        "city in /offer/publish:",
-        city,
-        "\n",
-        "brand in /offer/publish:",
-        brand,
-        "\n",
-        "size in /offer/publish:",
-        size,
-        "\n",
-        "color in /offer/publish:",
-        color
-      );
+      // console.log(
+      //   "title in /offer/publish:",
+      //   title,
+      //   "\n",
+      //   "description in /offer/publish:",
+      //   description,
+      //   "\n",
+      //   "price in /offer/publish:",
+      //   price,
+      //   "\n",
+      //   "condition in /offer/publish:",
+      //   condition,
+      //   "\n",
+      //   "city in /offer/publish:",
+      //   city,
+      //   "\n",
+      //   "brand in /offer/publish:",
+      //   brand,
+      //   "\n",
+      //   "size in /offer/publish:",
+      //   size,
+      //   "\n",
+      //   "color in /offer/publish:",
+      //   color
+      // );
       if (req.body !== undefined) {
         console.log(
           "req.user.id:",
@@ -148,7 +148,7 @@ router.post(
         newOffer.product_image = req.uploadOneFile;
         newOffer.product_pictures = req.uploadMultiFile;
         await newOffer.save();
-        console.log("newOffer after Save:", newOffer);
+        // console.log("newOffer after Save:", newOffer);
         return res.status(200).json({ newOffer, message: "produit crée" });
       } else {
         res.status(400).json({ message: "aucune valeur dans les champs" });

@@ -1,14 +1,9 @@
 const mongoose = require("mongoose");
 
-const Offer = mongoose.model("Offer", {
+const Transactions = mongoose.model("Transactions", {
   product_name: {
     type: String,
     maxLength: 50,
-    required: true,
-  },
-  product_description: {
-    type: String,
-    maxLength: 500,
     required: true,
   },
   product_price: {
@@ -16,13 +11,16 @@ const Offer = mongoose.model("Offer", {
     max: 100000,
     required: true,
   },
-  product_details: Array,
-  product_image: Object,
-  product_pictures: Array,
+  product_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Offer",
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  product_sold: Boolean,
+  date: {
+    type: Date,
+  },
 });
-module.exports = Offer;
+module.exports = Transactions;

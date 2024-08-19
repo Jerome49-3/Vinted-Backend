@@ -1,7 +1,10 @@
 const User = require("../models/User");
 
 const isAuthenticated = async (req, res, next) => {
-  // console.log('req.headers.authorizationMiddleware:', req.headers.authorization);
+  // console.log(
+  //   "req.headers.authorizationMiddleware:",
+  //   req.headers.authorization
+  // );
   //si headers token d'authorization
   if (!req.headers.authorization) {
     return res.status(403).json({ message: "forbidden", error: error.message });

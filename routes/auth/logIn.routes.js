@@ -21,6 +21,7 @@ router.post("/login", fileUpload(), async (req, res) => {
             _id: user.id,
             token: user.token,
             account: user.account,
+            isAdmin: user.isAdmin,
             message: "login succesfully",
           });
         }

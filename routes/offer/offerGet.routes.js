@@ -59,14 +59,14 @@ router.get("/offers", async (req, res) => {
         skipPage = page - 1;
         skipNum = skipPage * limitNum;
       }
-      console.log(
-        "skipPage",
-        skipPage,
-        "skipNum:",
-        skipNum,
-        "limitNum:",
-        limitNum
-      );
+      // console.log(
+      //   "skipPage",
+      //   skipPage,
+      //   "skipNum:",
+      //   skipNum,
+      //   "limitNum:",
+      //   limitNum
+      // );
       const offers = await Offer.find(filter)
         .sort(filterSort)
         .limit(limitNum)
@@ -74,14 +74,14 @@ router.get("/offers", async (req, res) => {
         .select(select);
       if (offers) {
         const userId = offers.owner;
-        console.log("userId in /offers/:id:", userId);
+        // console.log("userId in /offers/:id:", userId);
         const ownerFind = await User.findById(userId).select("account");
-        console.log("ownerFind after findbyid in /offers/:id:", ownerFind);
+        // console.log("ownerFind after findbyid in /offers/:id:", ownerFind);
       }
       return res.status(200).json({
         offers: {
           product_name: offers.product_name,
-          product_description: offers.product_name,
+          product_description: offers.product_description,
           product_price: offers.product_price,
           product_details: offers.product_details,
           product_image: offers.product_image,
@@ -90,7 +90,7 @@ router.get("/offers", async (req, res) => {
         },
       });
     } else {
-      console.log("ok");
+      // console.log("ok");
       const newOffers = await Offer.find();
       // console.log("offers in /offers/:id:", offers);
       let offers = [];
@@ -98,7 +98,7 @@ router.get("/offers", async (req, res) => {
       // console.log("newOffers in /offers/:id:", newOffers);
       for (let i = 0; i < newOffers.length; i++) {
         const el = newOffers[i];
-        console.log("el:", el);
+        // console.log("el:", el);
         const userId = el.owner;
         // console.log("userId in /offers/:id:", userId);
         // console.log("typeof userId in /offers/:id:", typeof userId);
@@ -121,16 +121,7 @@ router.get("/offers", async (req, res) => {
       return res.status(200).json(offers);
     }
   } catch (error) {
-    console.log(
-      "error:",
-      error,
-      "\n",
-      "error.message:",
-      error.message,
-      "\n",
-      "error.message:",
-      error.message
-    );
+    console.log("error:", error, "\n", "error.message:", error.message);
     return res.status(500).json({ error: error.message });
   }
 });
@@ -138,30 +129,46 @@ router.get("/offers", async (req, res) => {
 router.get("/offers/:id", async (req, res) => {
   console.log("je suis sur la route /offers/:id");
   const offerId = req.params.id;
-  console.log("offerId in /offers/:id", offerId);
+  // console.log("offerId in /offers/:id", offerId);
 
   const offerIdIsValid = mongoose.isValidObjectId(offerId);
-  console.log("offerIdIsValid in /offers/:id:", offerIdIsValid);
+  // console.log("offerIdIsValid in /offers/:id:", offerIdIsValid);
   if (offerId !== undefined && offerIdIsValid !== false) {
     try {
       const offer = await Offer.findById(offerId);
-      console.log("offerId after findbyid in /offers/:id:", offerId);
-      console.log("offer in /offers/:id:", offer);
+      // console.log("offerId after findbyid in /offers/:id:", offerId);
+      // console.log("offer in /offers/:id:", offer);
       if (offer) {
+        let detailsObj = {};
         const userId = offer.owner;
-        console.log("userId in /offers/:id:", userId);
+        // console.log("userId in /offers/:id:", userId);
         const ownerFind = await User.findById(userId).select("account");
-        console.log("ownerFind after findbyid in /offers/:id:", ownerFind);
+        // console.log("ownerFind after findbyid in /offers/:id:", ownerFind);
+        const offerDetails = offer.product_details;
+        // console.log("offerDetails:", offerDetails);
+        // for (let i = 0; i < offerDetails.length; i++) {
+        //   const el = offerDetails[i];
+        //   // console.log("el:", el);
+        //   const marque = el.MARQUE;
+        //   // console.log("marque:", marque);
+        //   const taille = el.TAILLE;
+        //   // console.log("taille:", taille);
+        //   const etat = el.ÉTAT;
+        //   // console.log("etat:", etat);
+        //   const couleur = el.COULEUR;
+        //   // console.log("couleur:", couleur);
+        //   const emplacement = el.EMPLACEMENT;
+        //   // console.log("emplacement:", emplacement);
+        // }
         return res.status(200).json({
-          offer: {
-            product_name: offer.product_name,
-            product_description: offer.product_name,
-            product_price: offer.product_price,
-            product_details: offer.product_details,
-            product_image: offer.product_image,
-            product_pictures: offer.product_pictures,
-            owner: ownerFind,
-          },
+          product_name: offer.product_name,
+          product_description: offer.product_name,
+          product_price: offer.product_price,
+          product_details: offer.product_details,
+          product_image: offer.product_image,
+          product_pictures: offer.product_pictures,
+          product_id: offer._id,
+          owner: ownerFind,
         });
       }
     } catch (error) {
