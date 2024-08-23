@@ -5,6 +5,7 @@ const uid2 = require("uid2");
 const { SHA256 } = require("crypto-js");
 const encBase64 = require("crypto-js/enc-base64");
 const fileUpload = require("express-fileupload");
+const moment = require("moment/moment.js");
 // const bcrypt = require('bcrypt');
 // const saltRounds = 16;
 
@@ -52,6 +53,8 @@ router.post("/signup", fileUpload(), async (req, res) => {
           const token = uid2(64);
           // console.log('token:', token)
           // si le hash, token different de null
+          const date = moment().format("DD MMM YYYY");
+          console.log("date in /users:", date);
           if (hash && token !== null) {
             if (req.body !== undefined) {
               const newUser = new User({
@@ -63,6 +66,7 @@ router.post("/signup", fileUpload(), async (req, res) => {
                 token: token,
                 hash: hash,
                 salt: salt,
+                date: date,
               });
               console.log("newUser in signup:", newUser);
               await newUser.save();

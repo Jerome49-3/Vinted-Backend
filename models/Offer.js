@@ -24,5 +24,8 @@ const Offer = mongoose.model("Offer", {
     ref: "User",
   },
   product_sold: Boolean,
+  date: {
+    type: Date,
+  },
 });
 module.exports = Offer;

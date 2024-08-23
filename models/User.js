@@ -21,6 +21,9 @@ const User = mongoose.model("User", {
   hash: String,
   salt: String,
   isAdmin: Boolean,
+  date: {
+    type: String,
+  },
 });
 
 module.exports = User;

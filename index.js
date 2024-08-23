@@ -14,6 +14,7 @@ const logInRoutes = require("./routes/auth/logIn.routes");
 const offerPost = require("./routes/offer/offerPost.routes");
 const offerGet = require("./routes/offer/offerGet.routes");
 const payment = require("./routes/payment/payment.routes");
+const users = require("./routes/users/users");
 // const offerPutDel = require("./routes/offer/offerPutDel.routes");
 
 //appel des routes
@@ -23,6 +24,7 @@ app.use("/user", logInRoutes);
 app.use(offerPost);
 app.use(offerGet);
 app.use(payment);
+app.use(users);
 // app.use(offerPutDel);
 
 cloudinary.config({

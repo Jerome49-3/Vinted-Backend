@@ -71,11 +71,11 @@ router.post(
           //   "\n",
           //   req.files.pictures
           // );
-          console.log(
-            "req.files.pictures.size before if:",
-            "\n",
-            req.files.pictures.size
-          );
+          // console.log(
+          //   "req.files.pictures.size before if:",
+          //   "\n",
+          //   req.files.pictures.size
+          // );
           //**** si req.files.pîctures est différent de null ou de 0 ****//
           if (req.files !== null && req.files.pictures !== 0) {
             if (req.files.pictures.size < 10485760) {
