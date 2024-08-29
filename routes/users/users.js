@@ -7,16 +7,16 @@ const moment = require("moment/moment.js");
 router.get("/users", isAuthenticated, async (req, res) => {
   // console.log("req.user:", req.user);
   const date = moment().format("l");
-  console.log("date in /users:", date);
+  // console.log("date in /users:", date);
 
   // return res.status(200).json({ message: "je suis sur la route /users" });
   try {
     const users = await User.find();
-    console.log("users in /users:", users);
+    // console.log("users in /users:", users);
     let lastUsers = [];
     for (let i = 0; i < users.length; i++) {
       const el = users[i];
-      console.log("el:", el);
+      // console.log("el:", el);
       lastUsers.push({
         username: el.account.username,
         avatar: el.account.avatar,
@@ -38,12 +38,12 @@ router.get("/users", isAuthenticated, async (req, res) => {
 router.get("/users/:id", isAuthenticated, async (req, res) => {
   // console.log("req.user:", req.user);
   const userId = req.params.id;
-  console.log("userId:", userId);
+  // console.log("userId:", userId);
   // return res.status(200).json({ message: "je suis sur la route /users" });
   if (userId !== undefined) {
     try {
       const user = await User.findById(userId);
-      console.log("user in /users:id:", user);
+      // console.log("user in /users:id:", user);
       res.status(200).json({
         username: user.account.username,
         avatar: user.account.avatar,

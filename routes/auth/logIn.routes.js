@@ -4,6 +4,8 @@ const User = require("../../models/User");
 const { SHA256 } = require("crypto-js");
 const encBase64 = require("crypto-js/enc-base64");
 const fileUpload = require("express-fileupload");
+const { uuidv7 } = require("uuidv7");
+var CryptoJS = require("crypto-js");
 
 router.post("/login", fileUpload(), async (req, res) => {
   // return res.status(200).json({ message: "je suis sur la route /login" });
@@ -14,16 +16,23 @@ router.post("/login", fileUpload(), async (req, res) => {
       if (user === undefined) {
         return res.status(400).json({ message: "Bad request " });
       } else {
+        // console.log("user:", user);
         const pwdHash = SHA256(password + user.salt).toString(encBase64);
         if (pwdHash === user.hash) {
-          // console.log('user:', user);
-          return res.status(200).json({
+          const KeySecret = process.env.KEY_SECRET;
+          const userObj = {
             _id: user.id,
             token: user.token,
             account: user.account,
             isAdmin: user.isAdmin,
-            message: "login succesfully",
-          });
+          };
+          // console.log("userObj:", userObj);
+          const userObjCrypt = CryptoJS.AES.encrypt(
+            JSON.stringify(userObj),
+            process.env.SRV_KEY_SECRET
+          ).toString();
+          // console.log("userObjCrypt:", userObjCrypt);
+          return res.status(200).json(userObjCrypt);
         }
       }
     }

@@ -15,7 +15,11 @@ const offerPost = require("./routes/offer/offerPost.routes");
 const offerGet = require("./routes/offer/offerGet.routes");
 const payment = require("./routes/payment/payment.routes");
 const users = require("./routes/users/users");
+const usersPutDel = require("./routes/users/usersPutDel");
+
 // const offerPutDel = require("./routes/offer/offerPutDel.routes");
+
+//KEY SECRET
 
 //appel des routes
 app.use(cors());
@@ -25,6 +29,7 @@ app.use(offerPost);
 app.use(offerGet);
 app.use(payment);
 app.use(users);
+app.use(usersPutDel);
 // app.use(offerPutDel);
 
 cloudinary.config({
