@@ -4,8 +4,7 @@ const User = require("../../models/User");
 const { SHA256 } = require("crypto-js");
 const encBase64 = require("crypto-js/enc-base64");
 const fileUpload = require("express-fileupload");
-const { uuidv7 } = require("uuidv7");
-var CryptoJS = require("crypto-js");
+const CryptoJS = require("crypto-js");
 
 router.post("/login", fileUpload(), async (req, res) => {
   // return res.status(200).json({ message: "je suis sur la route /login" });
@@ -19,7 +18,6 @@ router.post("/login", fileUpload(), async (req, res) => {
         // console.log("user:", user);
         const pwdHash = SHA256(password + user.salt).toString(encBase64);
         if (pwdHash === user.hash) {
-          const KeySecret = process.env.KEY_SECRET;
           const userObj = {
             _id: user.id,
             token: user.token,

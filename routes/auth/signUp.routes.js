@@ -6,6 +6,7 @@ const { SHA256 } = require("crypto-js");
 const encBase64 = require("crypto-js/enc-base64");
 const fileUpload = require("express-fileupload");
 const moment = require("moment/moment.js");
+const CryptoJS = require("crypto-js");
 // const bcrypt = require('bcrypt');
 // const saltRounds = 16;
 
@@ -70,12 +71,19 @@ router.post("/signup", fileUpload(), async (req, res) => {
               });
               console.log("newUser in signup:", newUser);
               await newUser.save();
-              res.status(201).json({
-                _id: newUser._id,
+              const userObj = {
+                _id: newUser.id,
                 token: newUser.token,
                 account: newUser.account,
-                message: "user created",
-              });
+                isAdmin: newUser.isAdmin,
+              };
+              // console.log("userObj:", userObj);
+              const userObjCrypt = CryptoJS.AES.encrypt(
+                JSON.stringify(userObj),
+                process.env.SRV_KEY_SECRET
+              ).toString();
+              // console.log("userObjCrypt:", userObjCrypt);
+              return res.status(200).json(userObjCrypt);
             }
           } else {
             return res
