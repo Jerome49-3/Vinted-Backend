@@ -7,20 +7,20 @@ const User = require("../../models/User");
 router.get("/offers", async (req, res) => {
   console.log("je suis sur la route /offers");
   const { title, priceMin, priceMax, sort, page } = req.query;
-  // console.log(
-  //   "req.query.title:",
-  //   req.query.title,
-  //   "\n",
-  //   "req.query.priceMin:",
-  //   req.query.priceMin,
-  //   "\n",
-  //   "req.query.priceMax:",
-  //   req.query.priceMax,
-  //   "\n",
-  //   "req.query.sort:",
-  //   req.query.sort
-  // );
-
+  console.log(
+    "req.query.title:",
+    req.query.title,
+    "\n",
+    "req.query.priceMin:",
+    req.query.priceMin,
+    "\n",
+    "req.query.priceMax:",
+    req.query.priceMax,
+    "\n",
+    "req.query.sort:",
+    req.query.sort
+  );
+  let ownerFind;
   let filter = {};
   let select = "";
   let skipNum = 0;
@@ -29,21 +29,30 @@ router.get("/offers", async (req, res) => {
 
   try {
     if (
-      req.query.title &&
-      req.query.priceMin &&
-      req.query.priceMax &&
+      req.query.title ||
+      req.query.priceMin ||
+      req.query.priceMax ||
       req.query.sort !== undefined
     ) {
-      select = "product_name product_price -_id";
+      // select = "product_name product_price -_id";
       // console.log('page:', page)
-      if (title !== undefined) {
+      if (
+        title !== undefined ||
+        priceMin !== undefined ||
+        priceMax !== undefined ||
+        sort === "price-desc" ||
+        sort === "price-asc" ||
+        page !== undefined ||
+        page !== 0
+      ) {
         filter.product_name = new RegExp(title, "i");
+        console.log("filter.product_name:", filter.product_name);
       }
       if (priceMin !== undefined) {
-        filter.product_price = { $gte: priceMin };
+        filter.product_price = { ...filter.product_price, $gte: priceMin };
       }
       if (priceMax !== undefined) {
-        filter.product_price = { $lte: priceMax };
+        filter.product_price = { ...filter.product_price, $lte: priceMax };
       }
       if (sort === "price-desc") {
         filterSort.product_price = -1;
@@ -70,25 +79,20 @@ router.get("/offers", async (req, res) => {
       const offers = await Offer.find(filter)
         .sort(filterSort)
         .limit(limitNum)
-        .skip(skipNum)
-        .select(select);
-      if (offers) {
-        const userId = offers.owner;
-        // console.log("userId in /offers/:id:", userId);
-        const ownerFind = await User.findById(userId).select("account");
-        // console.log("ownerFind after findbyid in /offers/:id:", ownerFind);
-      }
-      return res.status(200).json({
-        offers: {
-          product_name: offers.product_name,
-          product_description: offers.product_description,
-          product_price: offers.product_price,
-          product_details: offers.product_details,
-          product_image: offers.product_image,
-          product_pictures: offers.product_pictures,
-          owner: ownerFind,
-        },
-      });
+        .skip(skipNum);
+      // .select(select);
+      console.log("offers in /offers/:id:", offers);
+      const offersWithOwner = await Promise.all(
+        offers.map(async (offer) => {
+          const owner = await User.findById(offer.owner).select("account");
+          return {
+            ...offer._doc,
+            owner,
+          };
+        })
+      );
+
+      return res.status(200).json(offersWithOwner);
     } else {
       // console.log("ok");
       const newOffers = await Offer.find();
@@ -146,20 +150,6 @@ router.get("/offers/:id", async (req, res) => {
         // console.log("ownerFind after findbyid in /offers/:id:", ownerFind);
         const offerDetails = offer.product_details;
         // console.log("offerDetails:", offerDetails);
-        // for (let i = 0; i < offerDetails.length; i++) {
-        //   const el = offerDetails[i];
-        //   // console.log("el:", el);
-        //   const marque = el.MARQUE;
-        //   // console.log("marque:", marque);
-        //   const taille = el.TAILLE;
-        //   // console.log("taille:", taille);
-        //   const etat = el.ÉTAT;
-        //   // console.log("etat:", etat);
-        //   const couleur = el.COULEUR;
-        //   // console.log("couleur:", couleur);
-        //   const emplacement = el.EMPLACEMENT;
-        //   // console.log("emplacement:", emplacement);
-        // }
         return res.status(200).json({
           product_name: offer.product_name,
           product_description: offer.product_name,
