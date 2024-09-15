@@ -5,6 +5,7 @@ const { SHA256 } = require("crypto-js");
 const encBase64 = require("crypto-js/enc-base64");
 const fileUpload = require("express-fileupload");
 const CryptoJS = require("crypto-js");
+const { message } = require("statuses");
 
 router.post("/login", fileUpload(), async (req, res) => {
   // return res.status(200).json({ message: "je suis sur la route /login" });
@@ -31,6 +32,12 @@ router.post("/login", fileUpload(), async (req, res) => {
           ).toString();
           // console.log("userObjCrypt:", userObjCrypt);
           return res.status(200).json(userObjCrypt);
+        } else {
+          return res
+            .status(400)
+            .json({
+              message: "Oops, something went wrong, please check your input.",
+            });
         }
       }
     }
