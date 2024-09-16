@@ -96,20 +96,20 @@ router.get("/offers", async (req, res) => {
     } else {
       // console.log("ok");
       const newOffers = await Offer.find();
-      // console.log("offers in /offers/:id:", offers);
+      // console.log("offers in /offers:", offers);
       let offers = [];
       // const getOffer = await Offer.find().select("product_name product_price -_id");
-      // console.log("newOffers in /offers/:id:", newOffers);
+      // console.log("newOffers in /offers:", newOffers);
       for (let i = 0; i < newOffers.length; i++) {
         const el = newOffers[i];
         // console.log("el:", el);
         const userId = el.owner;
-        // console.log("userId in /offers/:id:", userId);
-        // console.log("typeof userId in /offers/:id:", typeof userId);
+        // console.log("userId in /offers:", userId);
+        // console.log("typeof userId in /offers:", typeof userId);
         // const userIdIsValid = mongoose.isValidObjectId(userId);
-        // console.log("userIdIsValid in /offers/:id:", userIdIsValid);
+        // console.log("userIdIsValid in /offers:", userIdIsValid);
         const ownerFind = await User.findById(userId).select("account");
-        // console.log("ownerFind in for in /offers/:id:", ownerFind);
+        // console.log("ownerFind in for in /offers:", ownerFind);
         offers.push({
           _id: el._id,
           product_name: el.product_name,
@@ -121,7 +121,7 @@ router.get("/offers", async (req, res) => {
           owner: ownerFind,
         });
       }
-      // console.log("offers in /offers/:id:", offers);
+      console.log("offers in /offers:", offers);
       return res.status(200).json(offers);
     }
   } catch (error) {

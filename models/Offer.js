@@ -23,7 +23,7 @@ const Offer = mongoose.model("Offer", {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  product_sold: Boolean,
+  Offer_solded: Boolean,
   date: {
     type: Date,
   },

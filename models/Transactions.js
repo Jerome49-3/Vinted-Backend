@@ -11,16 +11,15 @@ const Transactions = mongoose.model("Transactions", {
     max: 100000,
     required: true,
   },
+  seller: Object,
+  buyer: Object,
+  offer_solded: Boolean,
   product_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Offer",
   },
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
   date: {
-    type: Date,
+    type: String,
   },
 });
 module.exports = Transactions;
