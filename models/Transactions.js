@@ -13,7 +13,6 @@ const Transactions = mongoose.model("Transactions", {
   },
   seller: Object,
   buyer: Object,
-  offer_solded: Boolean,
   product_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Offer",

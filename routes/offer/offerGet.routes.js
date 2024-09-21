@@ -141,7 +141,7 @@ router.get("/offers/:id", async (req, res) => {
     try {
       const offer = await Offer.findById(offerId);
       // console.log("offerId after findbyid in /offers/:id:", offerId);
-      // console.log("offer in /offers/:id:", offer);
+      console.log("offer in /offers/:id:", offer);
       if (offer) {
         let detailsObj = {};
         const userId = offer.owner;

@@ -43,12 +43,12 @@ router.post(
       //   color
       // );
       if (req.body !== undefined) {
-        console.log(
-          "req.user.id:",
-          req.user.id,
-          "req.user.account.username",
-          req.user.account.username
-        );
+        // console.log(
+        //   "req.user.id in /offer/publish:",
+        //   req.user.id,
+        //   "req.user.account.username in /offer/publish:",
+        //   req.user.account.username
+        // );
         const newOffer = new Offer({
           product_name: title,
           product_description: description,
@@ -65,49 +65,29 @@ router.post(
         // console.log("newOffer before Save:", newOffer);
         try {
           //**** verifier la précense de req.files.pîctures ****//
-          console.log("req.files before if:", "\n", req.files);
-          console.log(
-            "req.files.pictures before if:",
-            "\n",
-            req.files.pictures
-          );
-          for (let i = 0; i < req.files.pictures.length; i++) {
+          // console.log("req.files before if /offer/publish:", "\n", req.files);
+          // console.log(
+          //   "req.files.pictures before if /offer/publish:",
+          //   "\n",
+          //   req.files.pictures
+          // );
+          if (req.files && req.files.pictures !== null) {
+            const arrayPictures = Array.isArray(req.files.pictures);
             console.log(
-              "req.files.pictures.size before if:",
-              "\n",
-              req.files.pictures[i].size
+              "arrayPictures after if req.files && req.files.pictures !== null on /offer/publish:",
+              arrayPictures
             );
-            //**** si req.files.pîctures est différent de null ou de 0 ****//
-            if (req.files !== null && req.files.pictures !== 0) {
-              if (req.files.pictures[i].size < 10485760) {
-                //**** stocker req.files.pîctures ds une variable ****//
-                const pictureToUpload = req.files.pictures;
-                console.log("pictureToUpload:", pictureToUpload);
-                //**** stocker la vérification de pictureToUpload dans une variable const 'arrayPictures' pour savoir si c'est un tableau ****//
-                const arrayPictures = Array.isArray(pictureToUpload);
-                console.log("arrayPictures:", arrayPictures);
-                //**** si 'arrayPictures' n'est pas un tableau ****//
-                if (arrayPictures === false) {
-                  //**** on convertit le buffer (données en language binaire, temporaire pour être utilisé) de l'image en base64 pour etre compris par cloudinary ****//
-                  const result = await cloudinary.uploader.upload(
-                    convertToBase64(pictureToUpload),
-                    {
-                      folder: "vinted/offers/" + newOffer._id,
-                    }
-                  );
-                  console.log("resultnotPromise:", result);
-                  //**** je stocke les données de la conversion en base64 du buffer de l'image dans req ****//
-                  req.uploadOneFile = result;
+            if (arrayPictures !== false) {
+              for (let i = 0; i < req.files.pictures.length; i++) {
+                console.log(
+                  "req.files.pictures[i] after for in /offer/publish:",
+                  "\n",
+                  req.files.pictures[i]
+                );
+                if (req.files.pictures[i].size < 10485760) {
                   console.log(
-                    "req.uploadOneFile in /publish:",
-                    req.uploadOneFile
-                  );
-                  //**** si arrayPictures est un tableau ****//
-                } else if (arrayPictures === true) {
-                  console.log(
-                    "req.files.pictures after else if:",
-                    "\n",
-                    req.files.pictures
+                    "req.files.pictures[i].size after for in /offer/publish::",
+                    req.files.pictures[i].size
                   );
                   //**** je stocke req.files.pictures dans une constante ****//
                   const picUpload = req.files.pictures;
@@ -131,21 +111,44 @@ router.post(
                     "req.uploadMultiFile in /publish:",
                     req.uploadMultiFile
                   );
-                }
-              } else {
-                return res
-                  .status(400)
-                  .json({
-                    message: "image size too large, max: 10485760 bytes",
+                } else {
+                  res.status(400).json({
+                    message:
+                      " one/many image size too large, max: 10485760 bytes. Please compress your file. You can do it here for example: https://compressor.io/",
                   });
+                }
+              }
+            } else if (arrayPictures === false) {
+              if (req.files.pictures.size < 10485760) {
+                console.log(
+                  "req.files.pictures.size after if in /offer/publish::",
+                  req.files.pictures.size
+                );
+                //**** on convertit le buffer (données en language binaire, temporaire pour être utilisé) de l'image en base64 pour etre compris par cloudinary ****//
+                const result = await cloudinary.uploader.upload(
+                  convertToBase64(req.files.pictures),
+                  {
+                    folder: "vinted/offers/" + newOffer._id,
+                  }
+                );
+                console.log("resultnotPromise:", result);
+                //**** je stocke les données de la conversion en base64 du buffer de l'image dans req ****//
+                req.uploadOneFile = result;
+                console.log(
+                  "req.uploadOneFile in /publish:",
+                  req.uploadOneFile
+                );
+              } else {
+                res.status(400).json({
+                  message:
+                    "image size too large, max: 10485760 bytes. Please compress your file. You can do it here for example: https://compressor.io/",
+                });
               }
             }
-            //**** si req.files.pîctures est null et different de 0, on retourne une erreur 400 bad request ****//
-            else {
-              return res
-                .status(400)
-                .json({ message: "bad request in /offer/publish" });
-            }
+          } else {
+            return res
+              .status(400)
+              .json({ message: "bad request, please check your input" });
           }
         } catch (error) {
           //**** si le try echoue (erreur server), on retourne une erreur ****//
