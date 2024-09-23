@@ -71,10 +71,10 @@ router.post(
           //   "\n",
           //   req.files.pictures
           // );
-          if (req.files && req.files.pictures !== null) {
+          if (req.files !== null && req.files.pictures !== 0) {
             const arrayPictures = Array.isArray(req.files.pictures);
             console.log(
-              "arrayPictures after if req.files && req.files.pictures !== null on /offer/publish:",
+              "arrayPictures after if req.files !== null && req.files.pictures !== 0 on /offer/publish:",
               arrayPictures
             );
             if (arrayPictures !== false) {

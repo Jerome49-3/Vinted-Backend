@@ -113,7 +113,7 @@ router.get("/offers", async (req, res) => {
         offers.push({
           _id: el._id,
           product_name: el.product_name,
-          product_description: el.product_name,
+          product_description: el.product_description,
           product_price: el.product_price,
           product_details: el.product_details,
           product_image: el.product_image,
@@ -148,11 +148,11 @@ router.get("/offers/:id", async (req, res) => {
         // console.log("userId in /offers/:id:", userId);
         const ownerFind = await User.findById(userId).select("account");
         // console.log("ownerFind after findbyid in /offers/:id:", ownerFind);
-        const offerDetails = offer.product_details;
+        // const offerDetails = offer.product_details;
         // console.log("offerDetails:", offerDetails);
         return res.status(200).json({
           product_name: offer.product_name,
-          product_description: offer.product_name,
+          product_description: offer.product_description,
           product_price: offer.product_price,
           product_details: offer.product_details,
           product_image: offer.product_image,
