@@ -79,16 +79,16 @@ router.post(
             );
             if (arrayPictures !== false) {
               for (let i = 0; i < req.files.pictures.length; i++) {
-                console.log(
-                  "req.files.pictures[i] after for in /offer/publish:",
-                  "\n",
-                  req.files.pictures[i]
-                );
+                // console.log(
+                //   "req.files.pictures[i] after for in /offer/publish:",
+                //   "\n",
+                //   req.files.pictures[i]
+                // );
                 if (req.files.pictures[i].size < 10485760) {
-                  console.log(
-                    "req.files.pictures[i].size after for in /offer/publish::",
-                    req.files.pictures[i].size
-                  );
+                  // console.log(
+                  //   "req.files.pictures[i].size after for in /offer/publish::",
+                  //   req.files.pictures[i].size
+                  // );
                   //**** je stocke req.files.pictures dans une constante ****//
                   const picUpload = req.files.pictures;
                   // console.log("picUpload:", picUpload);
@@ -120,10 +120,10 @@ router.post(
               }
             } else if (arrayPictures === false) {
               if (req.files.pictures.size < 10485760) {
-                console.log(
-                  "req.files.pictures.size after if in /offer/publish::",
-                  req.files.pictures.size
-                );
+                // console.log(
+                //   "req.files.pictures.size after if in /offer/publish::",
+                //   req.files.pictures.size
+                // );
                 //**** on convertit le buffer (données en language binaire, temporaire pour être utilisé) de l'image en base64 pour etre compris par cloudinary ****//
                 const result = await cloudinary.uploader.upload(
                   convertToBase64(req.files.pictures),

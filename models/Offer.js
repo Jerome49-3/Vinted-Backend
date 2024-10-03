@@ -19,13 +19,13 @@ const Offer = mongoose.model("Offer", {
   product_details: Array,
   product_image: Object,
   product_pictures: Array,
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
   Offer_solded: Boolean,
   date: {
     type: Date,
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 module.exports = Offer;

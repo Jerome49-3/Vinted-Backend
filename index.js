@@ -17,6 +17,8 @@ const payment = require("./routes/payment/payment.routes");
 const users = require("./routes/users/users");
 const transactions = require("./routes/transactions/transactions.routes");
 const usersPutDel = require("./routes/users/usersPutDel");
+const mysales = require("./routes/mysales/mysales.routes");
+const mypurchases = require("./routes/mypurchases/mypurchases.routes");
 // const offerPutDel = require("./routes/offer/offerPutDel.routes");
 
 //KEY SECRET
@@ -31,6 +33,8 @@ app.use(payment);
 app.use(users);
 app.use(usersPutDel);
 app.use(transactions);
+app.use(mysales);
+app.use(mypurchases);
 // app.use(offerPutDel);
 
 cloudinary.config({
