@@ -1,4 +1,10 @@
 {
+  "name": "Vinted-Backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Jerome49-3/Vinted-Backend",
+  "author": "jerome <151376824+Jerome49-3@users.noreply.github.com>",
+  "license": "MIT",
   "dependencies": {
     "cloudinary": "^2.5.1",
     "cors": "^2.8.5",
