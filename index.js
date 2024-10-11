@@ -9,8 +9,8 @@ const cloudinary = require("cloudinary").v2;
 const stripe = require("stripe")(process.env.STRIPE_KEY_SECRET);
 //**** npx nodemon index.js ****//
 //routes
-const signUpRoutes = require("./routes/auth/signup.routes");
-const logInRoutes = require("./routes/auth/logIn.routes");
+const signupRoutes = require("./routes/auth/signup.routes");
+const loginRoutes = require("./routes/auth/login.routes");
 const offerPost = require("./routes/offer/offerPost.routes");
 const offerGet = require("./routes/offer/offerGet.routes");
 const payment = require("./routes/payment/payment.routes");
@@ -26,8 +26,8 @@ const mypurchases = require("./routes/mypurchases/mypurchases.routes");
 
 //appel des routes
 app.use(cors());
-app.use("/user", signUpRoutes);
-app.use("/user", logInRoutes);
+app.use("/user", signupRoutes);
+app.use("/user", loginRoutes);
 app.use(offerPost);
 app.use(offerGet);
 app.use(payment);
