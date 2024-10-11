@@ -8,7 +8,7 @@ const CryptoJS = require("crypto-js");
 const { message } = require("statuses");
 const jwt = require("jsonwebtoken");
 
-router.post("/login", fileUpload(), async (req, res) => {
+router.post("/user/login", fileUpload(), async (req, res) => {
   console.log("je suis sur la route /login");
   try {
     const { password, email } = req.body;

@@ -11,7 +11,7 @@ const CryptoJS = require("crypto-js");
 // const saltRounds = 16;
 const jwt = require("jsonwebtoken");
 
-router.post("/signup", fileUpload(), async (req, res) => {
+router.post("/user/signup", fileUpload(), async (req, res) => {
   // res.status(200).json({ message: "je suis sur la route /signup" });
   const { password, username, email, newsletter } = req.body;
   // console.log(

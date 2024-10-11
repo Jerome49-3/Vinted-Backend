@@ -8,7 +8,7 @@ mongoose.connect(process.env.MONGODB_URI);
 const cloudinary = require("cloudinary").v2;
 const stripe = require("stripe")(process.env.STRIPE_KEY_SECRET);
 //**** npx nodemon index.js ****//
-//routes
+//***routes****//
 const signupRoutes = require("./routes/auth/signup.routes");
 const loginRoutes = require("./routes/auth/login.routes");
 const offerPost = require("./routes/offer/offerPost.routes");
@@ -22,12 +22,10 @@ const mysales = require("./routes/mysales/mysales.routes");
 const mypurchases = require("./routes/mypurchases/mypurchases.routes");
 // const offerPutDel = require("./routes/offer/offerPutDel.routes");
 
-//KEY SECRET
-
-//appel des routes
+//appel des routes//
 app.use(cors());
-app.use("/user", signupRoutes);
-app.use("/user", loginRoutes);
+app.use(signupRoutes);
+app.use(loginRoutes);
 app.use(offerPost);
 app.use(offerGet);
 app.use(payment);
