@@ -1,7 +1,6 @@
 {
-  "name": "Vinted-Backend",
+  "name": "vinted-backend",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "https://github.com/Jerome49-3/Vinted-Backend",
   "author": "jerome <151376824+Jerome49-3@users.noreply.github.com>",
   "license": "MIT",
@@ -19,6 +18,7 @@
     "stripe": "^17.2.0",
     "uid2": "^1.0.0"
   },
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"

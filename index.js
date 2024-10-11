@@ -8,6 +8,7 @@ mongoose.connect(process.env.MONGODB_URI);
 const cloudinary = require("cloudinary").v2;
 const stripe = require("stripe")(process.env.STRIPE_KEY_SECRET);
 //**** npx nodemon index.js ****//
+
 //***routes****//
 const signupRoutes = require("./routes/auth/signup.routes");
 const loginRoutes = require("./routes/auth/login.routes");
