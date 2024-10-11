@@ -24,8 +24,8 @@ const mypurchases = require("./routes/mypurchases/mypurchases.routes");
 
 //appel des routes//
 app.use(cors());
-app.use(signupRoutes);
-app.use(loginRoutes);
+app.use("/user", signupRoutes);
+app.use("/user", loginRoutes);
 app.use(offerPost);
 app.use(offerGet);
 app.use(payment);
