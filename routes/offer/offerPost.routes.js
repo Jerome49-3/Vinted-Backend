@@ -11,8 +11,9 @@ router.post(
   isAuthenticated,
   fileUpload(),
   async (req, res) => {
-    console.log("je suis sur  la route /offer/publish");
-    //  Verification des clé crée dans req
+    console.log("je suis sur  la route in /offer/publish");
+    console.log("req.user in /offer/publish:", req.user);
+
     // console.log("req.body:", req);
     try {
       const { title, description, price, condition, city, brand, size, color } =
@@ -43,12 +44,12 @@ router.post(
       //   color
       // );
       if (req.body !== undefined) {
-        // console.log(
-        //   "req.user.id in /offer/publish:",
-        //   req.user.id,
-        //   "req.user.account.username in /offer/publish:",
-        //   req.user.account.username
-        // );
+        console.log(
+          "req.user.id in /offer/publish:",
+          req.user.id,
+          "req.user.account.username in /offer/publish:",
+          req.user.account.username
+        );
         const newOffer = new Offer({
           product_name: title,
           product_description: description,

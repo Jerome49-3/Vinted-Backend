@@ -81,7 +81,7 @@ router.get("/offers", async (req, res) => {
         .limit(limitNum)
         .skip(skipNum);
       // .select(select);
-      console.log("offers in /offers/:id:", offers);
+      console.log("offers in /offers:", offers);
       const offersWithOwner = await Promise.all(
         offers.map(async (offer) => {
           const owner = await User.findById(offer.owner).select("account");
@@ -102,7 +102,7 @@ router.get("/offers", async (req, res) => {
       // console.log("newOffers in /offers:", newOffers);
       for (let i = 0; i < newOffers.length; i++) {
         const el = newOffers[i];
-        // console.log("el:", el);
+        console.log("el:", el);
         const userId = el.owner;
         // console.log("userId in /offers:", userId);
         // console.log("typeof userId in /offers:", typeof userId);
@@ -118,6 +118,7 @@ router.get("/offers", async (req, res) => {
           product_details: el.product_details,
           product_image: el.product_image,
           product_pictures: el.product_pictures,
+          offer_solded: el.offer_solded,
           owner: ownerFind,
         });
       }

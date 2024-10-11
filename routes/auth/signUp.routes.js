@@ -9,6 +9,7 @@ const moment = require("moment/moment.js");
 const CryptoJS = require("crypto-js");
 // const bcrypt = require('bcrypt');
 // const saltRounds = 16;
+const jwt = require("jsonwebtoken");
 
 router.post("/signup", fileUpload(), async (req, res) => {
   // res.status(200).json({ message: "je suis sur la route /signup" });
@@ -51,12 +52,10 @@ router.post("/signup", fileUpload(), async (req, res) => {
           // console.log("hash in signup:", hash);
           // const hash = await bcrypt.hash(password, 16);
           // console.log("hash in signup:", hash);
-          const token = uid2(64);
-          // console.log('token:', token)
           // si le hash, token different de null
           const date = moment().format("DD MMM YYYY");
           console.log("date in /users:", date);
-          if (hash && token !== null) {
+          if (hash !== null) {
             if (req.body !== undefined) {
               const newUser = new User({
                 email: email,
@@ -64,26 +63,35 @@ router.post("/signup", fileUpload(), async (req, res) => {
                   username: username,
                 },
                 newsletter: newsletter,
-                token: token,
                 hash: hash,
                 salt: salt,
                 date: date,
               });
-              console.log("newUser in signup:", newUser);
-              await newUser.save();
-              const userObj = {
-                _id: newUser.id,
-                token: newUser.token,
-                account: newUser.account,
-                isAdmin: newUser.isAdmin,
-              };
-              // console.log("userObj:", userObj);
-              const userObjCrypt = CryptoJS.AES.encrypt(
-                JSON.stringify(userObj),
+              // const userObj = {
+              //   _id: newUser.id,
+              //   account: newUser.account,
+              //   isAdmin: newUser.isAdmin,
+              //   newsletter: newUser.newsletter,
+              // };
+              // // console.log("userObj:", userObj);
+              // const token = CryptoJS.AES.encrypt(
+              //   JSON.stringify(userObj),
+              //   process.env.SRV_KEY_SECRET
+              // ).toString();
+              const token = jwt.sign(
+                {
+                  _id: newUser.id,
+                  account: newUser.account,
+                  isAdmin: newUser.isAdmin,
+                  newsletter: newUser.newsletter,
+                },
                 process.env.SRV_KEY_SECRET
-              ).toString();
-              // console.log("userObjCrypt:", userObjCrypt);
-              return res.status(200).json(userObjCrypt);
+              );
+              console.log("token in /signup:", token);
+              console.log("newUser in /signup:", newUser);
+              newUser.token = token;
+              await newUser.save();
+              return res.status(200).json({ data: token });
             }
           } else {
             return res

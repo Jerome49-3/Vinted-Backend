@@ -102,6 +102,16 @@ router.put("/users/:id", isAuthenticated, fileUpload(), async (req, res) => {
           findUserId.isAdmin = isAdmin;
         }
       }
+      const token = jwt.sign(
+        {
+          _id: findUserId.id,
+          account: findUserId.account,
+          isAdmin: findUserId.isAdmin,
+          newsletter: findUserId.newsletter,
+        },
+        process.env.SRV_KEY_SECRET
+      );
+      findUserId.token = token;
       await findUserId.save();
       res.status(200).json({ message: "profile updated" });
     }

@@ -19,7 +19,10 @@ const Offer = mongoose.model("Offer", {
   product_details: Array,
   product_image: Object,
   product_pictures: Array,
-  Offer_solded: Boolean,
+  offer_solded: {
+    type: Boolean,
+    default: false,
+  },
   date: {
     type: Date,
   },

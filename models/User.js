@@ -20,7 +20,14 @@ const User = mongoose.model("User", {
   token: String,
   hash: String,
   salt: String,
-  isAdmin: Boolean,
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+  becomeAdmin: {
+    type: Boolean,
+    default: false,
+  },
   date: {
     type: String,
   },
